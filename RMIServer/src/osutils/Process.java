@@ -7,7 +7,7 @@
 package osutils;
 
 /**
- *
+ * Class which implements a process.
  * @author cynthia
  */
 public class Process implements IProcess{
