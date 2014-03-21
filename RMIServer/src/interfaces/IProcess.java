@@ -15,7 +15,7 @@ public interface IProcess {
      * 
      * @return int process id
      */
-    public int getPID();
+    public String getPID();
     /**
      * 
      * @return String process command name
@@ -25,7 +25,7 @@ public interface IProcess {
      * %CPU
      * @return float process CPU usage 
      */
-    public float getUsingCPU();
+    public String getUsingCPU();
     /**
      * CPU Time in hh:mm:ss
      * @return String process CPU time
@@ -35,8 +35,8 @@ public interface IProcess {
      * WQ
      * @return int process thread count
      */
-    public int getThreads();
-//    public int getPort();
+    public String getThreads();
+    
     public String getUsingMemory();
     /**
      * user name

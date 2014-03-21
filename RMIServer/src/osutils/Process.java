@@ -13,17 +13,28 @@ import interfaces.IProcess;
  * @author cynthia
  */
 public class Process implements IProcess{
-    private int pid;
+    private String pid;
     private String name;
-    private float usingCPU;
+    private String usingCPU;
     private String cpuTime;
-    private int threads;
-    private int port;
+    private String threads;
+    private String port;
     private String usingMemory;
     private String user;
     
+    public void setProcess (String pid,String name,String usingCPU,String cpuTime,String threads,String usingMemory,String user){
+        this.pid=pid;
+        this.name=name;
+        this.usingCPU=usingCPU;
+        this.cpuTime=cpuTime;
+        this.threads=threads;
+        this.port=port;
+        this.usingMemory=usingMemory;
+        this.user=user;
+    }
+    
     @Override
-    public int getPID() {
+    public String getPID() {
         return pid;
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -35,7 +46,7 @@ public class Process implements IProcess{
     }
 
     @Override
-    public float getUsingCPU() {
+    public String getUsingCPU() {
         return usingCPU;
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -47,14 +58,8 @@ public class Process implements IProcess{
     }
 
     @Override
-    public int getThreads() {
+    public String getThreads() {
         return threads;
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-//    @Override
-    public int getPort() {
-        return port;
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

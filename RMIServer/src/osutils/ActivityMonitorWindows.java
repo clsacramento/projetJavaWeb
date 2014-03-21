@@ -20,24 +20,43 @@ import java.util.ArrayList;
  * @author cynthia
  */
 public class ActivityMonitorWindows implements IActivityMonitor{
-    private static String command="ps -ax -O %cpu,%mem,user,time,wq,stat,rss";
+    /**
+     * Attention pour lancer les scripts powershell sous windows il faut lancer une console powershell en administrateur et exécuter Set-ExectionPolicy Unrestricted
+     */
+    private static String command="cmd.exe /c powershell.exe C:\\Users\\Damien\\Documents\\cmd.ps1";
     private java.lang.Process p;
 
     @Override
     public ArrayList<IProcess> getListOfProcesses() throws IOException,InterruptedException {
+        ArrayList<IProcess> arrayProcess  = new ArrayList<>();
         p = Runtime.getRuntime().exec(ActivityMonitorWindows.command);
 //        int waitFor = p.waitFor();
 
         BufferedReader reader = 
              new BufferedReader(new InputStreamReader(p.getInputStream()));
         StringBuilder sb = new StringBuilder();
-        String line = "";			
+        String line = "";
+        reader.readLine();
         while ((line = reader.readLine())!= null) {
+            Process process = new Process();
             System.out.println(line);
-            
             sb.append(line + "\n");
+            String str[] = line.split("\\s+");
+            String pid = str[0];
+            String name = str[1];
+            String mem = str [2];
+            String proc;
+            try {
+                proc = str [3];
+            }catch (ArrayIndexOutOfBoundsException e){
+                proc = null;
+            }
+                    
+               process.setProcess(pid,name,null,proc,null,mem,null);
+               arrayProcess.add(process);
+            
         }
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return arrayProcess;
     }
 
     @Override
