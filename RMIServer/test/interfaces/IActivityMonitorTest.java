@@ -14,11 +14,10 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import rmiserver.ServerOS;
 
 /**
  *
- * @author cynthia
+ * @author Damien
  */
 public class IActivityMonitorTest {
     
@@ -47,14 +46,10 @@ public class IActivityMonitorTest {
     @Test
     public void testGetListOfProcesses() throws Exception {
         System.out.println("getListOfProcesses");
-        IActivityMonitor instance = ServerOS.getOSActivityMonitor();
-//        ArrayList<IProcess> expResult = null;
+        IActivityMonitor instance = new IActivityMonitorImpl();
+        ArrayList<IProcess> expResult = null;
         ArrayList<IProcess> result = instance.getListOfProcesses();
-//        assertEquals(expResult, result);
-        IProcess proc = result.get(0);
-        
-        assertNotNull(proc);
-        assertNotNull(proc.getName());
+        assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

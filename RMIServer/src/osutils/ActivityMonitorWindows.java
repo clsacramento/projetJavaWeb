@@ -42,13 +42,19 @@ public class ActivityMonitorWindows implements IActivityMonitor{
             System.out.println(line);
             sb.append(line + "\n");
             String str[] = line.split("\\s+");
-            String pid = str[0];
-            String name = str[1];
-            String mem = str [2];
+            String pid;
+            String name;
+            String mem;
             String proc;
             try {
+                pid = str[0];
+                name = str[1];
+                mem = str [2];
                 proc = str [3];
             }catch (ArrayIndexOutOfBoundsException e){
+                pid = null;
+                name = null;
+                mem = null;
                 proc = null;
             }
                     
