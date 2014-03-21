@@ -6,6 +6,7 @@
 
 package rmiclient;
 
+import interfaces.IActivityMonitor;
 import interfaces.IProcess;
 import java.rmi.Naming;
 import java.util.ArrayList;
@@ -21,7 +22,8 @@ public class RMIClient {
      */
     public static void main(String[] args) {
         try {
-            ArrayList<IProcess> processList = (ArrayList) Naming.lookup("//localhost/ActivityMonitor");
+            IActivityMonitor iam = (IActivityMonitor) Naming.lookup("//localhost/ActivityMonitor");
+            ArrayList<IProcess> processList = iam.getListOfProcesses();
 //            String message = obj.sayHello();
             
             for(IProcess process : processList){
