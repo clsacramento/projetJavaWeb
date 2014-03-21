@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package osutils;
+package interfaces;
 
 import java.io.IOException;
 import java.util.ArrayList;

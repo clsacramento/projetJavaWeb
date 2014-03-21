@@ -4,15 +4,13 @@
  * and open the template in the editor.
  */
 
-package osutils;
+package interfaces;
 
 /**
  *
  * @author cynthia
  */
-public interface ICPU {
-    public float getTotalUsed();
-    public float getUserLoad();
-    public float getSystemLoad();
-    public float getIdle();
+public interface IPhysicalMemory {
+    public String getUsed();
+    public String getFree();
 }

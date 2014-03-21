@@ -6,6 +6,10 @@
 
 package osutils;
 
+import interfaces.IProcess;
+import interfaces.IActivityMonitor;
+import interfaces.ICPU;
+import interfaces.IPhysicalMemory;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;

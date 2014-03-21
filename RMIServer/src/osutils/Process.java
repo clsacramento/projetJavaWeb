@@ -6,6 +6,8 @@
 
 package osutils;
 
+import interfaces.IProcess;
+
 /**
  * Class which implements a process.
  * @author cynthia
