@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import rmiserver.ServerOS;
 
 /**
  *
@@ -58,12 +59,16 @@ public class IActivityMonitorTest {
      * Test of getPhysicalMemory method, of class IActivityMonitor.
      */
     @Test
-    public void testGetPhysicalMemory() {
+    public void testGetPhysicalMemory() throws IOException, InterruptedException {
         System.out.println("getPhysicalMemory");
-        IActivityMonitor instance = new IActivityMonitorImpl();
-        IPhysicalMemory expResult = null;
-        IPhysicalMemory result = instance.getPhysicalMemory();
-        assertEquals(expResult, result);
+        IActivityMonitor instance = ServerOS.getOSActivityMonitor();
+//        ArrayList<IProcess> expResult = null;
+        ArrayList<IProcess> result = instance.getListOfProcesses();
+//        assertEquals(expResult, result);
+        IProcess proc = result.get(0);
+        
+        assertNotNull(proc);
+        assertNotNull(proc.getName());
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
