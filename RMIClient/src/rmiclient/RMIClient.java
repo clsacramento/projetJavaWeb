@@ -6,6 +6,10 @@
 
 package rmiclient;
 
+import interfaces.IProcess;
+import java.rmi.Naming;
+import java.util.ArrayList;
+
 /**
  *
  * @author Damien
@@ -16,7 +20,18 @@ public class RMIClient {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        try {
+            ArrayList<IProcess> processList = (ArrayList) Naming.lookup("//localhost/ActivityMonitor");
+//            String message = obj.sayHello();
+            
+            for(IProcess process : processList){
+                System.out.println("PID : "+process.getPID()+", Nom : " + process.getName());
+            }
+            
+        } catch (Exception e) {
+            System.out.println("Client exception: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
     
 }
