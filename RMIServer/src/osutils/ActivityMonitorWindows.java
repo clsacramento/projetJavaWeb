@@ -31,7 +31,10 @@ public class ActivityMonitorWindows implements IActivityMonitor{
         BufferedReader reader = 
              new BufferedReader(new InputStreamReader(p.getInputStream()));
         StringBuilder sb = new StringBuilder();
-        String line = "";			
+        String line = "";	
+        
+        reader.readLine();
+        
         while ((line = reader.readLine())!= null) {
             System.out.println(line);
             
