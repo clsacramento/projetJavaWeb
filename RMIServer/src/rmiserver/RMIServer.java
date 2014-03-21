@@ -16,14 +16,15 @@ import osutils.*;
  * @author cynthia
  */
 public class RMIServer {
+    
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        IActivityMonitor iam;
-        iam = new ActivityMonitorWindows();
+        IActivityMonitor iam = ServerOS.getOSActivityMonitor();
+        
         try {
             iam.getListOfProcesses();
         } catch (IOException | InterruptedException ex) {
