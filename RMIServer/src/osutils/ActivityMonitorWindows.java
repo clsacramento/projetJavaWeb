@@ -19,13 +19,13 @@ import java.util.ArrayList;
  * Activity Monitor for Mac OSX.
  * @author cynthia
  */
-public class ActivityMonitor implements IActivityMonitor{
+public class ActivityMonitorWindows implements IActivityMonitor{
     private static String command="ps -ax -O %cpu,%mem,user,time,wq,stat,rss";
     private java.lang.Process p;
 
     @Override
     public ArrayList<IProcess> getListOfProcesses() throws IOException,InterruptedException {
-        p = Runtime.getRuntime().exec(ActivityMonitor.command);
+        p = Runtime.getRuntime().exec(ActivityMonitorWindows.command);
 //        int waitFor = p.waitFor();
 
         BufferedReader reader = 
@@ -34,6 +34,7 @@ public class ActivityMonitor implements IActivityMonitor{
         String line = "";			
         while ((line = reader.readLine())!= null) {
             System.out.println(line);
+            
             sb.append(line + "\n");
         }
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

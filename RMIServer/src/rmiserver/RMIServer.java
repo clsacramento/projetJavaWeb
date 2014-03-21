@@ -23,7 +23,7 @@ public class RMIServer {
     public static void main(String[] args) {
         // TODO code application logic here
         IActivityMonitor iam;
-        iam = new ActivityMonitor();
+        iam = new ActivityMonitorWindows();
         try {
             iam.getListOfProcesses();
         } catch (IOException | InterruptedException ex) {
