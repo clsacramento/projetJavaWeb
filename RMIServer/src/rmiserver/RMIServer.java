@@ -8,6 +8,7 @@ package rmiserver;
 
 import interfaces.IActivityMonitor;
 import java.io.IOException;
+import java.rmi.Naming;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 /**
@@ -22,10 +23,10 @@ public class RMIServer {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        IActivityMonitor iam = ServerOS.getOSActivityMonitor();
-        
         try {
+            IActivityMonitor iam = ServerOS.getOSActivityMonitor();
             iam.getListOfProcesses();
+            Naming.rebind("//localhost/ActivityMonitor", iam);
         } catch (IOException | InterruptedException ex) {
             Logger.getLogger(RMIServer.class.getName()).log(Level.SEVERE, null, ex);
         }

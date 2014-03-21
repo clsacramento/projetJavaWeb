@@ -13,18 +13,23 @@ import interfaces.IPhysicalMemory;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
 /**
  * Activity Monitor for Mac OSX.
  * @author cynthia
  */
-public class ActivityMonitorWindows implements IActivityMonitor{
+public class ActivityMonitorWindows extends UnicastRemoteObject implements IActivityMonitor{
     /**
      * Attention pour lancer les scripts powershell sous windows il faut lancer une console powershell en administrateur et exécuter Set-ExectionPolicy Unrestricted
      */
     private static String command="cmd.exe /c powershell.exe C:\\Users\\Damien\\Documents\\cmd.ps1";
     private java.lang.Process p;
+
+    public ActivityMonitorWindows() throws RemoteException {
+    }
 
     @Override
     public ArrayList<IProcess> getListOfProcesses() throws IOException,InterruptedException {
@@ -38,7 +43,6 @@ public class ActivityMonitorWindows implements IActivityMonitor{
         String line = "";
         reader.readLine();
         while ((line = reader.readLine())!= null) {
-            Process process = new Process();
             System.out.println(line);
             sb.append(line + "\n");
             String str[] = line.split("\\s+");
@@ -57,8 +61,7 @@ public class ActivityMonitorWindows implements IActivityMonitor{
                 mem = null;
                 proc = null;
             }
-                    
-               process.setProcess(pid,name,null,proc,null,mem,null);
+               Process process = new Process(pid,name,null,proc,null,mem,null);
                arrayProcess.add(process);
             
         }

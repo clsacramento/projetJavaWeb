@@ -70,4 +70,7 @@
     nbproject/build-impl.xml file. 
 
     -->
+	<target name="-post-compile">
+        <rmic base="${build.classes.dir}" includes="**/*Impl.class"/>
+    </target>
 </project>

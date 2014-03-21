@@ -7,6 +7,7 @@
 package rmiserver;
 
 import interfaces.IActivityMonitor;
+import java.rmi.RemoteException;
 import osutils.ActivityMonitorMac;
 import osutils.ActivityMonitorWindows;
 
@@ -38,7 +39,7 @@ public class ServerOS {
      * Detect Server OS and returns specific ActivityMonitor
      * @return IActivityMonitor
      */
-    public static IActivityMonitor getOSActivityMonitor()
+    public static IActivityMonitor getOSActivityMonitor() throws RemoteException
     {
         IActivityMonitor iam;
         

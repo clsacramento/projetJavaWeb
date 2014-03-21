@@ -7,28 +7,29 @@
 package osutils;
 
 import interfaces.IProcess;
+import java.io.Serializable;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
 /**
  * Class which implements a process.
  * @author cynthia
  */
-public class Process implements IProcess{
+public class Process extends UnicastRemoteObject implements IProcess,Serializable{
     private String pid;
     private String name;
     private String usingCPU;
     private String cpuTime;
     private String threads;
-    private String port;
     private String usingMemory;
     private String user;
-    
-    public void setProcess (String pid,String name,String usingCPU,String cpuTime,String threads,String usingMemory,String user){
+
+    public Process(String pid,String name,String usingCPU,String cpuTime,String threads,String usingMemory,String user) throws RemoteException {
         this.pid=pid;
         this.name=name;
         this.usingCPU=usingCPU;
         this.cpuTime=cpuTime;
         this.threads=threads;
-        this.port=port;
         this.usingMemory=usingMemory;
         this.user=user;
     }
