@@ -35,45 +35,38 @@ public class Process extends UnicastRemoteObject implements IProcess,Serializabl
     }
     
     @Override
-    public String getPID() {
+    public String getPID() throws RemoteException {
         return pid;
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public String getName() {
+    public String getName() throws RemoteException {
         return name;
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public String getUsingCPU() {
+    public String getUsingCPU() throws RemoteException {
         return usingCPU;
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public String getCPUTime() {
+    public String getCPUTime() throws RemoteException {
         return cpuTime;
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public String getThreads() {
+    public String getThreads() throws RemoteException {
         return threads;
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public String getUsingMemory() {
+    public String getUsingMemory() throws RemoteException {
         return usingMemory;
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public String getUser() {
+    public String getUser() throws RemoteException {
         return user;
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

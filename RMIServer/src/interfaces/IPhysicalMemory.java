@@ -6,11 +6,16 @@
 
 package interfaces;
 
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+
 /**
  *
  * @author cynthia
  */
-public interface IPhysicalMemory {
-    public String getUsed();
-    public String getFree();
+public interface IPhysicalMemory extends Remote{
+    public String getUsed() throws RemoteException;
+    public String getFree() throws RemoteException;
+    public String getTotal() throws RemoteException;
+
 }

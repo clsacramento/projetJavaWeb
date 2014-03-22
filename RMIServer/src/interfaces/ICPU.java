@@ -6,13 +6,16 @@
 
 package interfaces;
 
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+
 /**
  *
  * @author cynthia
  */
-public interface ICPU {
-    public float getTotalUsed();
-    public float getUserLoad();
-    public float getSystemLoad();
-    public float getIdle();
+public interface ICPU  extends Remote{
+    public String getTotalUsed() throws RemoteException;
+    public String getUserLoad() throws RemoteException;
+    public String getSystemLoad() throws RemoteException;
+    public String getIdle() throws RemoteException;
 }

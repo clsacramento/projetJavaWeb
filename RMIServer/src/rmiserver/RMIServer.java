@@ -26,6 +26,8 @@ public class RMIServer {
         try {
             IActivityMonitor iam = ServerOS.getOSActivityMonitor();
             iam.getListOfProcesses();
+            iam.getPhysicalMemory();
+            iam.getCPU();
             Naming.rebind("//localhost/ActivityMonitor", iam);
         } catch (IOException | InterruptedException ex) {
             Logger.getLogger(RMIServer.class.getName()).log(Level.SEVERE, null, ex);

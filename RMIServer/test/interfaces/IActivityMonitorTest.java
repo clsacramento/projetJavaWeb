@@ -7,6 +7,7 @@
 package interfaces;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -77,7 +78,7 @@ public class IActivityMonitorTest {
      * Test of getCPU method, of class IActivityMonitor.
      */
     @Test
-    public void testGetCPU() {
+    public void testGetCPU() throws RemoteException {
         System.out.println("getCPU");
         IActivityMonitor instance = new IActivityMonitorImpl();
         ICPU expResult = null;
