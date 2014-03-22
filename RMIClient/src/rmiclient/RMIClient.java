@@ -24,11 +24,13 @@ public class RMIClient {
         try {
             IActivityMonitor iam = (IActivityMonitor) Naming.lookup("//localhost/ActivityMonitor");
             ArrayList<IProcess> processList = iam.getListOfProcesses();
-//            String message = obj.sayHello();
-            
             for(IProcess process : processList){
                 System.out.println("PID : "+process.getPID()+", Nom : " + process.getName());
             }
+            System.out.println("Total : " + iam.getPhysicalMemory().getTotal() + " Mo");
+            System.out.println("Used : " + iam.getPhysicalMemory().getUsed()+ " Mo");
+            System.out.println("Free : " + iam.getPhysicalMemory().getFree()+ " Mo");
+            System.out.println("CPU : " + iam.getCPU().getTotalUsed() + " %");
             
         } catch (Exception e) {
             System.out.println("Client exception: " + e.getMessage());
