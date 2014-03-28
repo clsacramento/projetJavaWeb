@@ -33,9 +33,9 @@ public class ActivityMonitorLinux implements IActivityMonitor{
         StringBuilder sb = new StringBuilder();
         String line = "";			
         while ((line = reader.readLine())!= null) {
-            System.out.println(line);
+            //System.out.println(line);
             
-            sb.append(line + "\n");
+            //sb.append(line + "\n");
         }
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

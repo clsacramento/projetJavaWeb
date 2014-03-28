@@ -6,16 +6,15 @@
 
 package interfaces;
 
-import java.rmi.Remote;
-import java.rmi.RemoteException;
+import java.io.Serializable;
 
 /**
  *
  * @author cynthia
  */
-public interface ICPU  extends Remote{
-    public String getTotalUsed() throws RemoteException;
-    public String getUserLoad() throws RemoteException;
-    public String getSystemLoad() throws RemoteException;
-    public String getIdle() throws RemoteException;
+public interface ICPU extends Serializable{
+    public String getTotalUsed();
+    public String getUserLoad();
+    public String getSystemLoad();
+    public String getIdle();
 }

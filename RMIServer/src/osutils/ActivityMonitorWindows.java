@@ -24,6 +24,10 @@ import java.util.logging.Logger;
  * @author cynthia
  */
 public class ActivityMonitorWindows extends UnicastRemoteObject implements IActivityMonitor {
+    /**
+     * Command to get list of process
+     */
+    private static String processListCommand = "cmd.exe /c powershell.exe ../../cmd.ps1 process";
 
     /**
      * Attention pour lancer les scripts powershell sous windows il faut lancer
@@ -37,9 +41,9 @@ public class ActivityMonitorWindows extends UnicastRemoteObject implements IActi
 
     @Override
     public ArrayList<IProcess> getListOfProcesses() throws IOException, InterruptedException {
-        String command = "cmd.exe /c powershell.exe ../../cmd.ps1 process";
+        
         ArrayList<IProcess> arrayProcess = new ArrayList<>();
-        p = Runtime.getRuntime().exec(command);
+        p = Runtime.getRuntime().exec(processListCommand);
         BufferedReader reader
                 = new BufferedReader(new InputStreamReader(p.getInputStream()));
         StringBuilder sb = new StringBuilder();
@@ -112,11 +116,8 @@ public class ActivityMonitorWindows extends UnicastRemoteObject implements IActi
             System.out.println(e);
         }
         Memory mem = new Memory("", "", "");
-        try {
+        
             mem = new Memory(total, used, free);
-        } catch (RemoteException ex) {
-            Logger.getLogger(ActivityMonitorWindows.class.getName()).log(Level.SEVERE, null, ex);
-        }
         return mem;
     }
 

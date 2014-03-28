@@ -9,7 +9,7 @@ package interfaces;
 import java.io.IOException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * OS Activity Monitor Interface which provides functions to gather information
@@ -24,7 +24,7 @@ public interface IActivityMonitor extends Remote {
      * @throws java.lang.InterruptedException
      * @throws java.rmi.RemoteException
      */
-    public ArrayList<IProcess> getListOfProcesses() throws IOException,InterruptedException,RemoteException;
+    public List<IProcess> getListOfProcesses() throws IOException,InterruptedException,RemoteException;
     /**
      * 
      * @return IPhysicalMemory memory usage information.

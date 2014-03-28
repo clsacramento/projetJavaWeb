@@ -15,29 +15,29 @@ import java.rmi.server.UnicastRemoteObject;
  *
  * @author Damien
  */
-public class Memory extends UnicastRemoteObject implements IPhysicalMemory,Serializable{
+public class Memory implements IPhysicalMemory{
 
     private String used;
     private String free;
     private String total;
     
-    public Memory (String total,String used,String free) throws RemoteException{
+    public Memory (String total,String used,String free){
         this.total = total;
         this.used = used;
         this.free = free;
     }
     @Override
-    public String getUsed() throws RemoteException {
+    public String getUsed(){
         return used;
     }
 
     @Override
-    public String getFree() throws RemoteException {
+    public String getFree(){
         return free;
     }
 
     @Override
-    public String getTotal() throws RemoteException {
+    public String getTotal(){
         return total;
     }
     

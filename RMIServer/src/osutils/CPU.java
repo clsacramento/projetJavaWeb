@@ -15,7 +15,7 @@ import java.rmi.server.UnicastRemoteObject;
  *
  * @author Damien
  */
-public class CPU extends UnicastRemoteObject implements ICPU,Serializable {
+public class CPU implements ICPU {
 
     private String total;
     private String userLoad;
@@ -23,7 +23,7 @@ public class CPU extends UnicastRemoteObject implements ICPU,Serializable {
     private String idle;
     
     
-    public CPU (String total,String userLoad,String systemLoad,String idle) throws RemoteException{
+    public CPU (String total,String userLoad,String systemLoad,String idle) {
         this.total = total;
         this.userLoad = userLoad;
         this.systemLoad = systemLoad;
@@ -31,22 +31,22 @@ public class CPU extends UnicastRemoteObject implements ICPU,Serializable {
     }
     
     @Override
-    public String getTotalUsed() throws RemoteException {
+    public String getTotalUsed() {
         return total;
     }
 
     @Override
-    public String getUserLoad() throws RemoteException {
+    public String getUserLoad() {
         return userLoad;
     }
 
     @Override
-    public String getSystemLoad() throws RemoteException {
+    public String getSystemLoad() {
         return systemLoad;
     }
 
     @Override
-    public String getIdle() throws RemoteException {
+    public String getIdle() {
         return idle;
     }
     

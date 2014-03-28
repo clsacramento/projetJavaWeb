@@ -6,6 +6,7 @@
 
 package interfaces;
 
+import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
@@ -13,9 +14,9 @@ import java.rmi.RemoteException;
  *
  * @author cynthia
  */
-public interface IPhysicalMemory extends Remote{
-    public String getUsed() throws RemoteException;
-    public String getFree() throws RemoteException;
-    public String getTotal() throws RemoteException;
+public interface IPhysicalMemory extends Serializable{
+    public String getUsed();
+    public String getFree();
+    public String getTotal();
 
 }

@@ -15,58 +15,62 @@ import java.rmi.server.UnicastRemoteObject;
  * Class which implements a process.
  * @author cynthia
  */
-public class Process extends UnicastRemoteObject implements IProcess,Serializable{
+public class Process implements IProcess,Serializable{
     private String pid;
     private String name;
     private String usingCPU;
     private String cpuTime;
-    private String threads;
+    private String state;
     private String usingMemory;
     private String user;
 
-    public Process(String pid,String name,String usingCPU,String cpuTime,String threads,String usingMemory,String user) throws RemoteException {
+    Process(String pid,String name,String usingCPU,String cpuTime,String state,String usingMemory,String user){
         this.pid=pid;
         this.name=name;
         this.usingCPU=usingCPU;
         this.cpuTime=cpuTime;
-        this.threads=threads;
+        this.state=state;
         this.usingMemory=usingMemory;
         this.user=user;
     }
     
     @Override
-    public String getPID() throws RemoteException {
+    public String getPID(){
         return pid;
     }
 
     @Override
-    public String getName() throws RemoteException {
+    public String getName(){
         return name;
     }
 
     @Override
-    public String getUsingCPU() throws RemoteException {
+    public String getUsingCPU(){
         return usingCPU;
     }
 
     @Override
-    public String getCPUTime() throws RemoteException {
+    public String getCPUTime(){
         return cpuTime;
     }
 
     @Override
-    public String getThreads() throws RemoteException {
-        return threads;
+    public String getState(){
+        return state;
     }
 
     @Override
-    public String getUsingMemory() throws RemoteException {
+    public String getUsingMemory(){
         return usingMemory;
     }
 
     @Override
-    public String getUser() throws RemoteException {
+    public String getUser(){
         return user;
     }
     
+    @Override
+    public String toString(){
+        return pid+","+name+","+user;
+    }
 }
