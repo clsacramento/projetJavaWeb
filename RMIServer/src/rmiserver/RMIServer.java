@@ -8,7 +8,9 @@ package rmiserver;
 
 import interfaces.IActivityMonitor;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.rmi.Naming;
+import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 /**
@@ -21,15 +23,16 @@ public class RMIServer {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-        // TODO code application logic here
-        try {
+    public static void main(String[] args) throws MalformedURLException {
+        try { 
             IActivityMonitor iam = ServerOS.getOSActivityMonitor();
-            iam.getListOfProcesses();
+//            iam.getListOfProcesses();
 //            iam.getPhysicalMemory();
 //            iam.getCPU();
-//            Naming.rebind("//localhost/ActivityMonitor", iam);
-        } catch (IOException | InterruptedException ex) {
+            Naming.rebind("//localhost/ActivityMonitor", iam);
+        } catch (RemoteException ex) {
+            Logger.getLogger(RMIServer.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
             Logger.getLogger(RMIServer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

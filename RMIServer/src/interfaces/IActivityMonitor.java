@@ -29,12 +29,14 @@ public interface IActivityMonitor extends Remote {
      * 
      * @return IPhysicalMemory memory usage information.
      * @throws java.rmi.RemoteException
+     * @throws java.lang.InterruptedException
      */
-    public IPhysicalMemory getPhysicalMemory() throws RemoteException;
+    public IPhysicalMemory getPhysicalMemory() throws IOException,InterruptedException,RemoteException;
     /**
      * 
      * @return ICPU CPU usage information
      * @throws java.rmi.RemoteException
+     * @throws java.lang.InterruptedException
      */
-    public ICPU getCPU() throws RemoteException;
+    public ICPU getCPU() throws IOException,InterruptedException,RemoteException;
 }

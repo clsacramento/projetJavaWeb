@@ -19,7 +19,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Activity Monitor for Mac OSX.
+ * Activity Monitor for Windows.
+ * 
+ * Attention pour lancer les scripts powershell sous windows il faut lancer
+ * une console powershell en administrateur et exécuter Set-ExectionPolicy
+ * Unrestricted
  *
  * @author cynthia
  */
@@ -29,12 +33,9 @@ public class ActivityMonitorWindows extends UnicastRemoteObject implements IActi
      */
     private static String processListCommand = "cmd.exe /c powershell.exe ../../cmd.ps1 process";
 
-    /**
-     * Attention pour lancer les scripts powershell sous windows il faut lancer
-     * une console powershell en administrateur et exécuter Set-ExectionPolicy
-     * Unrestricted
-     */
-    private java.lang.Process p;
+    private static String cpuCommand = "cmd.exe /c powershell.exe ../../cmd.ps1 cpu";
+    
+    private static String commandMemory = "cmd.exe /c powershell.exe ../../cmd.ps1 used_mem";
 
     public ActivityMonitorWindows() throws RemoteException {
     }
@@ -43,7 +44,7 @@ public class ActivityMonitorWindows extends UnicastRemoteObject implements IActi
     public ArrayList<IProcess> getListOfProcesses() throws IOException, InterruptedException {
         
         ArrayList<IProcess> arrayProcess = new ArrayList<>();
-        p = Runtime.getRuntime().exec(processListCommand);
+        java.lang.Process p = Runtime.getRuntime().exec(processListCommand);
         BufferedReader reader
                 = new BufferedReader(new InputStreamReader(p.getInputStream()));
         StringBuilder sb = new StringBuilder();
@@ -72,16 +73,13 @@ public class ActivityMonitorWindows extends UnicastRemoteObject implements IActi
     }
 
     @Override
-    public IPhysicalMemory getPhysicalMemory() throws RemoteException {
+    public IPhysicalMemory getPhysicalMemory() throws RemoteException, IOException {
         String used = "";
         String free = "";
         String total = "";
-        String command = "cmd.exe /c powershell.exe ../../cmd.ps1 used_mem";
-        try {
-            p = Runtime.getRuntime().exec(command);
-        } catch (IOException e) {
-            System.out.println(e);
-        }
+        
+        java.lang.Process p = null;
+        p = Runtime.getRuntime().exec(commandMemory);
         BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
         StringBuilder sb = new StringBuilder();
         try {
@@ -89,12 +87,10 @@ public class ActivityMonitorWindows extends UnicastRemoteObject implements IActi
         } catch (IOException e) {
             System.out.println(e);
         }
-        command = "cmd.exe /c powershell.exe ../../cmd.ps1 free_mem";
-        try {
-            p = Runtime.getRuntime().exec(command);
-        } catch (IOException e) {
-            System.out.println(e);
-        }
+        commandMemory = "cmd.exe /c powershell.exe ../../cmd.ps1 free_mem";
+        
+        p = Runtime.getRuntime().exec(commandMemory);
+        
         reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
         sb = new StringBuilder();
         try {
@@ -102,12 +98,9 @@ public class ActivityMonitorWindows extends UnicastRemoteObject implements IActi
         } catch (IOException e) {
             System.out.println(e);
         }
-        command = "cmd.exe /c powershell.exe ../../cmd.ps1 total_mem";
-        try {
-            p = Runtime.getRuntime().exec(command);
-        } catch (IOException e) {
-            System.out.println(e);
-        }
+        commandMemory = "cmd.exe /c powershell.exe ../../cmd.ps1 total_mem";
+        
+        p = Runtime.getRuntime().exec(commandMemory);
         reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
         sb = new StringBuilder();
         try {
@@ -122,14 +115,11 @@ public class ActivityMonitorWindows extends UnicastRemoteObject implements IActi
     }
 
     @Override
-    public ICPU getCPU() throws RemoteException {
+    public ICPU getCPU() throws RemoteException, IOException {
         CPU cpuTotal = new CPU("","","","");
-        String command = "cmd.exe /c powershell.exe ../../cmd.ps1 cpu";
-        try {
-            p = Runtime.getRuntime().exec(command);
-        } catch (IOException e) {
-            System.out.println(e);
-        }
+        
+        java.lang.Process p = null;
+        p = Runtime.getRuntime().exec(cpuCommand);
         BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
         StringBuilder sb = new StringBuilder();
         String line = "";

@@ -13,25 +13,33 @@ import interfaces.IPhysicalMemory;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Serializable;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
 /**
  * Activity Monitor for Mac OSX.
  * @author cynthia
  */
-public class ActivityMonitorMac implements IActivityMonitor{    
+public class ActivityMonitorMac extends UnicastRemoteObject implements IActivityMonitor{    
     //top -stats pid,command,cpu,th,pstate,time -l 1
+    
+    public ActivityMonitorMac() throws RemoteException {
+        
+    }
     
     /**
      * Command to get list of process
      */
     private static String processListCommand="ps -ax -O %cpu,%mem,user,wq,rss";
-    private java.lang.Process p;
+    
+    private static String cpuAndMemoryCommand = "top -R -l 1 ";
 
     @Override
     public ArrayList<IProcess> getListOfProcesses() throws IOException,InterruptedException {
         ArrayList<IProcess> arrayProcesses = new ArrayList<>();
-        p = Runtime.getRuntime().exec(ActivityMonitorMac.processListCommand);
+        java.lang.Process p = Runtime.getRuntime().exec(ActivityMonitorMac.processListCommand);
 
         BufferedReader reader = 
              new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -64,13 +72,59 @@ public class ActivityMonitorMac implements IActivityMonitor{
     }
 
     @Override
-    public IPhysicalMemory getPhysicalMemory() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public IPhysicalMemory getPhysicalMemory() throws IOException {
+        java.lang.Process p = Runtime.getRuntime().exec(ActivityMonitorMac.cpuAndMemoryCommand);
+
+        BufferedReader reader = 
+             new BufferedReader(new InputStreamReader(p.getInputStream()));
+        String line;
+        
+        int ignoreLines = 6;
+        
+        for(int i = 0; i < ignoreLines; i++)
+        {
+            reader.readLine();
+        }
+        line = reader.readLine().replaceAll("PhysMem: ", "");
+        
+        String str[] = line.split(",");
+        
+        String used = str[0].replaceAll(" \\(.*\\)", "");
+        String free = str[1].replace(".", "");
+        
+        IPhysicalMemory mem = new Memory(null, used, free);
+        
+        return mem;
     }
 
     @Override
-    public ICPU getCPU() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public ICPU getCPU() throws IOException {
+        java.lang.Process p = Runtime.getRuntime().exec(ActivityMonitorMac.cpuAndMemoryCommand);
+
+        BufferedReader reader = 
+             new BufferedReader(new InputStreamReader(p.getInputStream()));
+        String line;
+        
+        int ignoreLines = 3;
+        
+        for(int i = 0; i < ignoreLines; i++)
+        {
+            reader.readLine();
+        }
+        
+        line = reader.readLine().replaceAll("CPU usage: ", "");
+        
+        String str[] = line.split(",");
+        
+        String user = str[0];
+        String sys = str[1];
+        String idle = str[2];
+        
+        ICPU cpu = new CPU(null, user, sys, idle);
+        
+        return cpu;
+        
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

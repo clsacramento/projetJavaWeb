@@ -38,6 +38,7 @@ public class ServerOS {
     /**
      * Detect Server OS and returns specific ActivityMonitor
      * @return IActivityMonitor
+     * @throws java.rmi.RemoteException
      */
     public static IActivityMonitor getOSActivityMonitor() throws RemoteException
     {

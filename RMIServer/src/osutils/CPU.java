@@ -23,7 +23,7 @@ public class CPU implements ICPU {
     private String idle;
     
     
-    public CPU (String total,String userLoad,String systemLoad,String idle) {
+    CPU (String total,String userLoad,String systemLoad,String idle) {
         this.total = total;
         this.userLoad = userLoad;
         this.systemLoad = systemLoad;
@@ -50,4 +50,12 @@ public class CPU implements ICPU {
         return idle;
     }
     
+    
+    @Override
+    public String toString(){
+        return (this.total != null ? this.total : "" )+
+                (this.systemLoad != null ? this.systemLoad+"," : "" )+
+                (this.userLoad != null ? this.userLoad+"," : "" )+
+                (this.idle != null ? this.idle : "" );
+    }
 }
