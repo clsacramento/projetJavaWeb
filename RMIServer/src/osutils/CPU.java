@@ -10,6 +10,7 @@ import interfaces.ICPU;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Date;
 
 /**
  *
@@ -21,13 +22,15 @@ public class CPU implements ICPU {
     private String userLoad;
     private String systemLoad;
     private String idle;
-    
+    private Date date;
     
     CPU (String total,String userLoad,String systemLoad,String idle) {
         this.total = total;
         this.userLoad = userLoad;
         this.systemLoad = systemLoad;
         this.idle = idle;
+        
+        this.date = new Date();
     }
     
     @Override
@@ -57,5 +60,10 @@ public class CPU implements ICPU {
                 (this.systemLoad != null ? this.systemLoad+"," : "" )+
                 (this.userLoad != null ? this.userLoad+"," : "" )+
                 (this.idle != null ? this.idle : "" );
+    }
+
+    @Override
+    public Date getDate() {
+        return this.date;
     }
 }

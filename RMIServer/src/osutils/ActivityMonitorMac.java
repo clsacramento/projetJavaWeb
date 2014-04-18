@@ -48,16 +48,25 @@ public class ActivityMonitorMac extends UnicastRemoteObject implements IActivity
             //PID  %CPU %MEM USER     WQ    RSS   TT  STAT  TIME COMMAND
             String str[] = line.split("\\s+");
             
-            String pid = str[1];
-            String cpu = str[2];
-            String mem = str[3];
-            String user = str[4];
-            String wq = str[5];
-            String rss = str[6];
-            String tt = str[7];
-            String stat = str[8];
-            String time = str[9];
-            String cmd = str[10].replaceAll("/.+/", "");
+            
+            int i = 0;
+            
+            if(str.length == 10)
+            {
+                i = -1;
+            }
+            
+            
+            String pid = str[1+i];
+            String cpu = str[2+i];
+            String mem = str[3+i];
+            String user = str[4+i];
+            String wq = str[5+i];
+            String rss = str[6+i];
+            String tt = str[7+i];
+            String stat = str[8+i];
+            String time = str[9+i];
+            String cmd = str[10+i].replaceAll("/.+/", "");
             
             IProcess lineProcess = new Process(pid, cmd, cpu, time, stat, mem, user);
             

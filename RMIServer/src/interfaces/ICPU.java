@@ -7,6 +7,7 @@
 package interfaces;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  *
@@ -17,4 +18,5 @@ public interface ICPU extends Serializable{
     public String getUserLoad();
     public String getSystemLoad();
     public String getIdle();
+    public Date getDate();
 }

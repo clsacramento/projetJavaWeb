@@ -9,6 +9,7 @@ package interfaces;
 import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.Date;
 
 /**
  *
@@ -53,4 +54,10 @@ public interface IProcess extends Serializable {
      * @throws java.rmi.RemoteException 
      */
     public String getUser();
+    
+    /**
+     * Date of object creation
+     * @return Date
+     */
+    public Date getDate();
 }

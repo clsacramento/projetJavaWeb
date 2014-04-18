@@ -10,6 +10,7 @@ import interfaces.IProcess;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Date;
 
 /**
  * Class which implements a process.
@@ -23,6 +24,8 @@ public class Process implements IProcess,Serializable{
     private String state;
     private String usingMemory;
     private String user;
+    
+    private Date date;
 
     Process(String pid,String name,String usingCPU,String cpuTime,String state,String usingMemory,String user){
         this.pid=pid;
@@ -32,6 +35,8 @@ public class Process implements IProcess,Serializable{
         this.state=state;
         this.usingMemory=usingMemory;
         this.user=user;
+        
+        this.date = new Date();
     }
     
     @Override
@@ -67,6 +72,11 @@ public class Process implements IProcess,Serializable{
     @Override
     public String getUser(){
         return user;
+    }
+    
+    @Override
+    public Date getDate(){
+        return this.date;        
     }
     
     @Override

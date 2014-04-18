@@ -9,6 +9,7 @@ package interfaces;
 import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.Date;
 
 /**
  *
@@ -18,5 +19,6 @@ public interface IPhysicalMemory extends Serializable{
     public String getUsed();
     public String getFree();
     public String getTotal();
+    public Date getDate();
 
 }
