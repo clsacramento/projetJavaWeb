@@ -43,36 +43,41 @@ public class ActivityMonitorMac extends UnicastRemoteObject implements IActivity
 
         BufferedReader reader = 
              new BufferedReader(new InputStreamReader(p.getInputStream()));
-        String line;			
+        String line;	
+        
+        reader.readLine();
+        
         while ((line = reader.readLine())!= null) {
             //PID  %CPU %MEM USER     WQ    RSS   TT  STAT  TIME COMMAND
-            String str[] = line.split("\\s+");
             
-            
-            int i = 0;
-            
-            if(str.length == 10)
+            if(line.startsWith(" "))
             {
-                i = -1;
+                line = line.replaceFirst("\\s+", "");
             }
             
+            String str[] = line.split("\\s+");
             
-            String pid = str[1+i];
-            String cpu = str[2+i];
-            String mem = str[3+i];
-            String user = str[4+i];
-            String wq = str[5+i];
-            String rss = str[6+i];
-            String tt = str[7+i];
-            String stat = str[8+i];
-            String time = str[9+i];
-            String cmd = str[10+i].replaceAll("/.+/", "");
+            String pid = str[0];
+            String cpu = str[1];
+            String mem = str[2];
+            String user = str[3];
+            String wq = str[4];
+            String rss = str[5];
+            String tt = str[6];
+            String stat = str[7];
+            String time = str[8];
+            String cmd = str[9].replaceAll("/.+/", "");
+            
+            for(int i = 10; i < str.length;i++)
+            {
+                cmd += " "+str[i];
+            }
             
             IProcess lineProcess = new Process(pid, cmd, cpu, time, stat, mem, user);
             
             
             
-            System.out.println(""+lineProcess);
+//            System.out.println(""+lineProcess);
             
             arrayProcesses.add(lineProcess);
         }
