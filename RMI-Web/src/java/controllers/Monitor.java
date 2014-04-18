@@ -4,8 +4,14 @@
  * and open the template in the editor.
  */
 
-package servlet;
+package controllers;
 
+import errors.database.DataBaseConnectionException;
+import errors.database.DataBaseConnectionInformationFileNotFoundException;
+import errors.database.DataBaseDriverMissingException;
+import errors.database.DataBaseInformationFileParsingException;
+import errors.rmi.NoActivityMonitorServerException;
+import errors.rmi.NoRMIServiceException;
 import interfaces.IActivityMonitor;
 import interfaces.ICPU;
 import interfaces.IPhysicalMemory;
@@ -16,6 +22,7 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -26,6 +33,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import models.Server;
 
 /**
  *
@@ -42,7 +50,7 @@ public class Monitor extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DataBaseConnectionInformationFileNotFoundException, SQLException, DataBaseDriverMissingException, DataBaseInformationFileParsingException, DataBaseConnectionException, NoActivityMonitorServerException, NoRMIServiceException {
         //response.setContentType("text/html;charset=UTF-8");
         IActivityMonitor iam = null;
         ArrayList<IProcess> processList = null;
@@ -61,15 +69,18 @@ public class Monitor extends HttpServlet {
         if (checkbox == null) {
             processExist = false;
         }
-        try {
-            iam = (IActivityMonitor) Naming.lookup("//" + request.getParameter("url") + "/ActivityMonitor");
-        } catch (NotBoundException ex) {
-            Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (RemoteException ex) {
-            Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
+        
+        
+        String host = request.getParameter("url");
+        Server server = new Server(host);
+
+        iam = server.getMonitor();
+        
+        if(server.getId()==0){
+            server = ServerController.insertServer(host);
         }
+            
+        
         if (memExist) {
             request.setAttribute("memExist", true);
             try {
@@ -148,8 +159,17 @@ public class Monitor extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (DataBaseConnectionInformationFileNotFoundException | SQLException | DataBaseDriverMissingException | DataBaseInformationFileParsingException | DataBaseConnectionException | NoActivityMonitorServerException | NoRMIServiceException ex) {
+            Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("error", ex);
+            request.getRequestDispatcher("/WEB-INF/error.jsp").forward(request, response);
+        } 
     }
+    
+    
+    
 
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -162,7 +182,13 @@ public class Monitor extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (DataBaseConnectionInformationFileNotFoundException | SQLException | DataBaseDriverMissingException | DataBaseInformationFileParsingException | DataBaseConnectionException | NoActivityMonitorServerException | NoRMIServiceException ex) {
+            Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("error", ex);
+            request.getRequestDispatcher("/WEB-INF/error.jsp").forward(request, response);
+        }
     }
 
     /**

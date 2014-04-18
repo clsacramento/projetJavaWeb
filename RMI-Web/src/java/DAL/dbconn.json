@@ -1,0 +1,7 @@
+{
+    "host": "192.168.8.2",
+    "port": "3306",
+    "database" : "rmi",
+    "user": "rmi",
+    "password" : "Rm1"
+}

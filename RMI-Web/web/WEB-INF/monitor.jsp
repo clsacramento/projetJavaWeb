@@ -70,7 +70,7 @@
         <%! String processExist; %>
         <% processExist = request.getAttribute("processExist").toString(); %>
         <% if (processExist.equals("true")) { %>
-        <table BORDER="1">
+        <table BORDER="1" width="50%">
             <tr> 
                 <th colspan="4">Liste des processus</th>
             </tr>
