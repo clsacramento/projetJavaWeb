@@ -7,6 +7,8 @@
 package servlet;
 
 import interfaces.IActivityMonitor;
+import interfaces.ICPU;
+import interfaces.IPhysicalMemory;
 import interfaces.IProcess;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,6 +17,7 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -69,9 +72,39 @@ public class Monitor extends HttpServlet {
         }
         if (memExist) {
             request.setAttribute("memExist", true);
-            request.setAttribute("totalMem", iam.getPhysicalMemory().getTotal());
-            request.setAttribute("usedMem", iam.getPhysicalMemory().getUsed());
-            request.setAttribute("freeMem", iam.getPhysicalMemory().getFree());
+            try {
+                IPhysicalMemory im = iam.getPhysicalMemory();
+                request.setAttribute("imem", im);
+            } catch (IOException ex) {
+                Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
+            }
+           
+        }
+        if (cpuExist) {
+            request.setAttribute("cpuExist", true);
+            try {
+                ICPU cp = iam.getCPU();
+                request.setAttribute("icpu", cp);
+            } catch (IOException ex) {
+                Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
+            }
+           
+        }
+        if (processExist) {
+            request.setAttribute("processExist", true);
+            try {
+                List<IProcess> pr = iam.getListOfProcesses();
+                request.setAttribute("iprocess", pr);
+            } catch (IOException ex) {
+                Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
+            }
+           
         }
         
         request.getRequestDispatcher("/WEB-INF/monitor.jsp").forward(request, response);
