@@ -70,7 +70,7 @@ public class ActivityMonitorMac extends UnicastRemoteObject implements IActivity
             
             for(int i = 10; i < str.length;i++)
             {
-                cmd += " "+str[i];
+                cmd += " "+str[i].replaceAll("/.+/", "");
             }
             
             IProcess lineProcess = new Process(pid, cmd, cpu, time, stat, mem, user);
@@ -101,12 +101,16 @@ public class ActivityMonitorMac extends UnicastRemoteObject implements IActivity
         }
         line = reader.readLine().replaceAll("PhysMem: ", "");
         
-        String str[] = line.split(",");
+        String str[] = line.split(", ");
         
-        String used = str[0].replaceAll(" \\(.*\\)", "");
-        String free = str[1].replace(".", "");
+        String used = str[0].replaceAll(" \\(.*\\)", "").replaceAll("M used", "");
+        String free = str[1].replace(".", "").replaceAll("M unused", "");
         
-        IPhysicalMemory mem = new Memory(null, used, free);
+        int u = Integer.parseInt(used);
+        int f = Integer.parseInt(free);
+        int total = u + f;
+        
+        IPhysicalMemory mem = new Memory(total+"", used, free);
         
         return mem;
     }
@@ -130,11 +134,15 @@ public class ActivityMonitorMac extends UnicastRemoteObject implements IActivity
         
         String str[] = line.split(",");
         
-        String user = str[0];
-        String sys = str[1];
-        String idle = str[2];
+        String user = str[0].replaceAll("% user", "");
+        String sys = str[1].replaceAll("% sys", "");
+        String idle = str[2].replaceAll("% idle", "");
         
-        ICPU cpu = new CPU(null, user, sys, idle);
+        float u = Float.parseFloat(user);
+        float s = Float.parseFloat(sys);
+        float total = u + s;
+        
+        ICPU cpu = new CPU(total+"", user, sys, idle);
         
         return cpu;
         

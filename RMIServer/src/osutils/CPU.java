@@ -56,7 +56,7 @@ public class CPU implements ICPU {
     
     @Override
     public String toString(){
-        return (this.total != null ? this.total : "" )+
+        return (this.total != null ? this.total+", "  : "" )+
                 (this.systemLoad != null ? this.systemLoad+"," : "" )+
                 (this.userLoad != null ? this.userLoad+"," : "" )+
                 (this.idle != null ? this.idle : "" );

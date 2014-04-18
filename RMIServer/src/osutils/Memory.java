@@ -47,8 +47,8 @@ public class Memory implements IPhysicalMemory{
     
     @Override
     public String toString(){
-        return (this.total != null ? this.total : "" )+
-                (this.used != null ? this.used+"," : "" )+
+        return (this.total != null ? this.total+", " : "" )+
+                (this.used != null ? this.used+", " : "" )+
                 (this.free != null ? this.free : "" );
     }
 
