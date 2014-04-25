@@ -21,6 +21,8 @@ public class RMIServer {
     
 
     /**
+     * Ne pas oublier la registry :
+     * rmiregistry -J-Djava.rmi.server.useCodebaseOnly=false
      * @param args the command line arguments
      */
     public static void main(String[] args) throws MalformedURLException {
