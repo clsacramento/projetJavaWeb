@@ -6,6 +6,14 @@
 
 package models;
 
+import DAL.UserDAO;
+import errors.database.DataBaseConnectionException;
+import errors.database.DataBaseConnectionInformationFileNotFoundException;
+import errors.database.DataBaseDriverMissingException;
+import errors.database.DataBaseInformationFileParsingException;
+import java.sql.SQLException;
+import java.util.HashMap;
+
 /**
  *
  * @author cynthia
@@ -13,9 +21,21 @@ package models;
 public class User {
     private int id;
     private String login;
+    private String password;
     
-    public User(String login){
+    public User(String login, String password){
         this.login = login;
+        this.password = password;
+    }
+
+    public boolean validateUser () throws SQLException, DataBaseConnectionInformationFileNotFoundException, DataBaseDriverMissingException, DataBaseInformationFileParsingException, DataBaseConnectionException{
+        HashMap user = UserDAO.selectServer(login, password);
+        if(user!=null)
+        {
+            this.id = Integer.parseInt((String) user.get("id_user"));
+            return true;
+        }
+        return false;
     }
     
     public int getId(){
