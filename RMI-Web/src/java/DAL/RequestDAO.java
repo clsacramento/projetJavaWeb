@@ -42,7 +42,7 @@ public class RequestDAO {
     }
     
     public static int insertRequestCPU(int requestId, String total, String userLoad,String systemLoad, String idle) throws SQLException, DataBaseConnectionInformationFileNotFoundException, DataBaseDriverMissingException, DataBaseConnectionException, DataBaseInformationFileParsingException{
-        java.sql.PreparedStatement stmt = DataBaseConnection.getStatement("insert into request (id_server,id_user,id_type_request,timestamp) values (?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+        java.sql.PreparedStatement stmt = DataBaseConnection.getStatement("insert into cpu (id_request,total,user_load,system_load,idle) values (?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
         
         stmt.setInt(1,requestId);
         stmt.setString(2, total);

@@ -12,6 +12,8 @@ import errors.database.DataBaseDriverMissingException;
 import errors.database.DataBaseInformationFileParsingException;
 import errors.rmi.NoActivityMonitorServerException;
 import errors.rmi.NoRMIServiceException;
+import errors.rmi.ServerRunTimeInternalErrorException;
+import errors.rmi.ServerDidNotRespondException;
 import interfaces.IActivityMonitor;
 import interfaces.ICPU;
 import interfaces.IPhysicalMemory;
@@ -33,7 +35,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import models.RequestCPU;
 import models.Server;
+import models.User;
 
 /**
  *
@@ -50,8 +54,14 @@ public class Monitor extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DataBaseConnectionInformationFileNotFoundException, SQLException, DataBaseDriverMissingException, DataBaseInformationFileParsingException, DataBaseConnectionException, NoActivityMonitorServerException, NoRMIServiceException {
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DataBaseConnectionInformationFileNotFoundException, SQLException, DataBaseDriverMissingException, DataBaseInformationFileParsingException, DataBaseConnectionException, NoActivityMonitorServerException, NoRMIServiceException, ServerDidNotRespondException, ServerRunTimeInternalErrorException {
         //response.setContentType("text/html;charset=UTF-8");
+        
+        
+        
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        
         IActivityMonitor iam = null;
         ArrayList<IProcess> processList = null;
         boolean cpuExist = true;
@@ -86,10 +96,11 @@ public class Monitor extends HttpServlet {
             try {
                 IPhysicalMemory im = iam.getPhysicalMemory();
                 request.setAttribute("imem", im);
-            } catch (IOException ex) {
+            } catch (RemoteException ex){
+                throw new ServerDidNotRespondException(host,"getPhysicalMemory");
+            } catch (    IOException | InterruptedException ex) {
                 Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
+                throw new ServerRunTimeInternalErrorException(host, "getPhysicalMemory");
             }
            
         }
@@ -98,10 +109,16 @@ public class Monitor extends HttpServlet {
             try {
                 ICPU cp = iam.getCPU();
                 request.setAttribute("icpu", cp);
-            } catch (IOException ex) {
+                
+                RequestCPU rCPU = new RequestCPU(server, user, "getCPU", cp);
+                rCPU.saveRequestDetails();
+                
+            } catch (RemoteException ex){
+                throw new ServerDidNotRespondException(host,"getCPU");
+            } 
+            catch (    IOException | InterruptedException ex) {
                 Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
+                throw new ServerRunTimeInternalErrorException(host, "getPhysicalMemory");
             }
            
         }
@@ -110,10 +127,11 @@ public class Monitor extends HttpServlet {
             try {
                 List<IProcess> pr = iam.getListOfProcesses();
                 request.setAttribute("iprocess", pr);
-            } catch (IOException ex) {
+            } catch (RemoteException ex){
+                throw new ServerDidNotRespondException(host,"getListOfProcesses");
+            } catch (    IOException | InterruptedException ex) {
                 Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
+                throw new ServerRunTimeInternalErrorException(host, "getPhysicalMemory");
             }
            
         }
@@ -161,7 +179,7 @@ public class Monitor extends HttpServlet {
             throws ServletException, IOException {
         try {
             processRequest(request, response);
-        } catch (DataBaseConnectionInformationFileNotFoundException | SQLException | DataBaseDriverMissingException | DataBaseInformationFileParsingException | DataBaseConnectionException | NoActivityMonitorServerException | NoRMIServiceException ex) {
+        } catch (DataBaseConnectionInformationFileNotFoundException | SQLException | DataBaseDriverMissingException | DataBaseInformationFileParsingException | DataBaseConnectionException | NoActivityMonitorServerException | NoRMIServiceException | ServerDidNotRespondException | ServerRunTimeInternalErrorException ex) {
             Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
             request.setAttribute("error", ex);
             request.getRequestDispatcher("/WEB-INF/error.jsp").forward(request, response);
@@ -184,7 +202,7 @@ public class Monitor extends HttpServlet {
             throws ServletException, IOException {
         try {
             processRequest(request, response);
-        } catch (DataBaseConnectionInformationFileNotFoundException | SQLException | DataBaseDriverMissingException | DataBaseInformationFileParsingException | DataBaseConnectionException | NoActivityMonitorServerException | NoRMIServiceException ex) {
+        } catch (DataBaseConnectionInformationFileNotFoundException | SQLException | DataBaseDriverMissingException | DataBaseInformationFileParsingException | DataBaseConnectionException | NoActivityMonitorServerException | NoRMIServiceException | ServerDidNotRespondException | ServerRunTimeInternalErrorException ex) {
             Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
             request.setAttribute("error", ex);
             request.getRequestDispatcher("/WEB-INF/error.jsp").forward(request, response);

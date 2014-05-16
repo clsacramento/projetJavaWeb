@@ -55,7 +55,11 @@ public abstract class Request {
         java.sql.Time t = new java.sql.Time(this.date.getTime());
         
         this.id = RequestDAO.insertRequest(this.server.getId(), this.user.getId(), this.typeRequestId, d+" "+t);
+        
+        if(this.id == 0){
+            
+        }
     }
     
-    public abstract void saveRequestDetails();
+    public abstract void saveRequestDetails() throws SQLException, DataBaseDriverMissingException, DataBaseConnectionInformationFileNotFoundException, DataBaseInformationFileParsingException, DataBaseConnectionException;
 }

@@ -6,7 +6,13 @@
 
 package models;
 
+import DAL.RequestDAO;
+import errors.database.DataBaseConnectionException;
+import errors.database.DataBaseConnectionInformationFileNotFoundException;
+import errors.database.DataBaseDriverMissingException;
+import errors.database.DataBaseInformationFileParsingException;
 import interfaces.ICPU;
+import java.sql.SQLException;
 import java.util.Date;
 
 /**
@@ -16,6 +22,8 @@ import java.util.Date;
 public class RequestCPU extends Request
 {
     private ICPU cpu;
+    private int idRequestCPU;
+    
     public RequestCPU(Server server, User user, String typeRequest, ICPU cpu) {
         super(server, user, typeRequest);
         this.cpu = cpu;
@@ -23,9 +31,13 @@ public class RequestCPU extends Request
     }
 
     @Override
-    public void saveRequestDetails() {
-        
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void saveRequestDetails() throws SQLException, DataBaseDriverMissingException, DataBaseConnectionInformationFileNotFoundException, DataBaseInformationFileParsingException, DataBaseConnectionException{
+        this.saveRequest();
+        this.idRequestCPU = RequestDAO.insertRequestCPU(
+                this.id, this.cpu.getTotalUsed(), 
+                cpu.getUserLoad(), 
+                cpu.getSystemLoad(), 
+                cpu.getIdle());
     }
     
 }
