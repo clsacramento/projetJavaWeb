@@ -38,18 +38,23 @@ import org.json.simple.JSONValue;
  * @author cynthia
  */
 public class DataBaseConnection {
+    private static String dbFile = "dbconn.json";
+    
+    private static Connection connection = null;
 
     public static Connection connect() throws DataBaseConnectionInformationFileNotFoundException, DataBaseDriverMissingException, DataBaseInformationFileParsingException, DataBaseConnectionException {
-        HashMap json = DataBaseConnection.getCredentials();
+        if(DataBaseConnection.connection == null)
+        {
+            HashMap json = DataBaseConnection.getCredentials();
         
-        return DataBaseConnection.connect((String)json.get("host"), 
+            DataBaseConnection.connection = DataBaseConnection.connect((String)json.get("host"), 
                 Integer.parseInt((String) json.get("port")), 
                 (String)json.get("database"), 
                 (String)json.get("user"), 
                 (String)json.get("password"));
+        }
+        return DataBaseConnection.connection;
     }
-
-    private static String dbFile = "dbconn.json";
 
     public static HashMap<String, String> getCredentials() throws DataBaseConnectionInformationFileNotFoundException, DataBaseInformationFileParsingException {
         InputStream br = null;

@@ -4,7 +4,15 @@
     Author     : Damien
 --%>
 
+<%@page import="models.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+    User user = (User) session.getAttribute("user");
+
+    if(user != null && user.getId()>0){
+        request.getRequestDispatcher("/WEB-INF/server.jsp").forward(request, response);
+    }
+%>
 <!DOCTYPE html>
 <HTML>
 <HEAD>
@@ -15,7 +23,7 @@
 <CENTER><BIG>Authentification</BIG></CENTER>
 <form name="form" method="post" action="UserController">
     <CENTER>Identifiant : <input type="text" name="login"></CENTER>
-    <CENTER>Mot de passe : <input type="text" name="password"></CENTER>
+    <CENTER>Mot de passe : <input type="password" name="password"></CENTER>
     <CENTER><INPUT type="submit" name="Submit" value="Ok"></CENTER>
 </form>
 </BODY>

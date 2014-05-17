@@ -7,7 +7,6 @@
 package models;
 
 import DAL.RequestDAO;
-import com.sun.xml.rpc.processor.modeler.j2ee.xml.javaIdentifierType;
 import errors.database.DataBaseConnectionException;
 import errors.database.DataBaseConnectionInformationFileNotFoundException;
 import errors.database.DataBaseDriverMissingException;

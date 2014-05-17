@@ -36,6 +36,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import models.RequestCPU;
+import models.RequestMemory;
+import models.RequestProcess;
 import models.Server;
 import models.User;
 
@@ -61,6 +63,10 @@ public class Monitor extends HttpServlet {
         
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
+        
+        if(user == null || user.getId()==0){
+            request.getRequestDispatcher("/index.jsp").forward(request, response);
+        }
         
         IActivityMonitor iam = null;
         ArrayList<IProcess> processList = null;
@@ -89,21 +95,7 @@ public class Monitor extends HttpServlet {
         if(server.getId()==0){
             server = ServerController.insertServer(host);
         }
-            
-        
-        if (memExist) {
-            request.setAttribute("memExist", true);
-            try {
-                IPhysicalMemory im = iam.getPhysicalMemory();
-                request.setAttribute("imem", im);
-            } catch (RemoteException ex){
-                throw new ServerDidNotRespondException(host,"getPhysicalMemory");
-            } catch (    IOException | InterruptedException ex) {
-                Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
-                throw new ServerRunTimeInternalErrorException(host, "getPhysicalMemory");
-            }
            
-        }
         if (cpuExist) {
             request.setAttribute("cpuExist", true);
             try {
@@ -118,6 +110,23 @@ public class Monitor extends HttpServlet {
             } 
             catch (    IOException | InterruptedException ex) {
                 Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
+                throw new ServerRunTimeInternalErrorException(host, "getCPU");
+            }
+           
+        } 
+        
+        if (memExist) {
+            request.setAttribute("memExist", true);
+            try {
+                IPhysicalMemory im = iam.getPhysicalMemory();
+                request.setAttribute("imem", im);
+                
+                RequestMemory rMem = new RequestMemory(server, user, "getPhysicalMemory", im);
+                rMem.saveRequestDetails();
+            } catch (RemoteException ex){
+                throw new ServerDidNotRespondException(host,"getPhysicalMemory");
+            } catch (    IOException | InterruptedException ex) {
+                Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
                 throw new ServerRunTimeInternalErrorException(host, "getPhysicalMemory");
             }
            
@@ -127,11 +136,14 @@ public class Monitor extends HttpServlet {
             try {
                 List<IProcess> pr = iam.getListOfProcesses();
                 request.setAttribute("iprocess", pr);
+                
+                RequestProcess rPro = new RequestProcess(server, user, "getListOfProcesses", pr);
+                rPro.saveRequestDetails();
             } catch (RemoteException ex){
                 throw new ServerDidNotRespondException(host,"getListOfProcesses");
             } catch (    IOException | InterruptedException ex) {
                 Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
-                throw new ServerRunTimeInternalErrorException(host, "getPhysicalMemory");
+                throw new ServerRunTimeInternalErrorException(host, "getListOfProcesses");
             }
            
         }

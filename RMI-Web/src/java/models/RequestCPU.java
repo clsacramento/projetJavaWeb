@@ -21,7 +21,7 @@ import java.util.Date;
  */
 public class RequestCPU extends Request
 {
-    private ICPU cpu;
+    private final ICPU cpu;
     private int idRequestCPU;
     
     public RequestCPU(Server server, User user, String typeRequest, ICPU cpu) {

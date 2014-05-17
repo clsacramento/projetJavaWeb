@@ -13,7 +13,13 @@
     </head>
     <body>
         <h1>Error</h1>
-        <% Exception ex = (Exception)request.getAttribute("error");%>
+        <% 
+            Exception ex = (Exception)request.getAttribute("error");
+            if(ex == null)
+            {
+                ex = new Exception("Unknown error. Sorry, this shouldn't be happening.");
+            }
+        %>
         <h2>Type : <%=ex.getClass().getName()%></h2>
         <h2>Description : </h2>
         <p>

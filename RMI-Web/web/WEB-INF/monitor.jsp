@@ -18,10 +18,9 @@
     <body>
     <center>
         <h1>Monitor</h1>
-        
-        <%! String cpuExist; %>
-        <% cpuExist = request.getAttribute("cpuExist").toString(); %>
-        <% if (cpuExist.equals("true")) { %>
+        <%! Object cpuExist; %>
+        <% cpuExist = request.getAttribute("cpuExist"); %>
+        <% if (cpuExist != null && cpuExist.toString().equals("true")) { %>
         <%! String cpuTotal;
         %>
         <%
@@ -37,10 +36,9 @@
             </tr>
         </table>
         <%}%>
-        <br>
-        <%! String memExist; %>
-        <% memExist = request.getAttribute("memExist").toString(); %>
-        <% if (memExist.equals("true")) { %>
+        <%! Object memExist; %>
+        <% memExist = request.getAttribute("memExist"); %>
+        <% if (memExist != null && memExist.toString().equals("true")) { %>
         <%! String totalMem;
             String usedMem;
             String freeMem;
@@ -51,6 +49,7 @@
             usedMem = im.getUsed();
             freeMem = im.getFree();
         %>
+        <br>
         <table BORDER="1">
             <tr> 
                 <th>Information mémoire</th>
@@ -67,9 +66,9 @@
         </table>
         <%}%>
         <br>
-        <%! String processExist; %>
-        <% processExist = request.getAttribute("processExist").toString(); %>
-        <% if (processExist.equals("true")) { %>
+        <%! Object processExist; %>
+        <% processExist = request.getAttribute("processExist"); %>
+        <% if (processExist != null && processExist.toString().equals("true")) { %>
         <table BORDER="1" width="50%">
             <tr> 
                 <th colspan="4">Liste des processus</th>
