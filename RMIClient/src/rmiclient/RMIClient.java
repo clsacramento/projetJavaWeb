@@ -22,7 +22,7 @@ public class RMIClient {
      */
     public static void main(String[] args) {
         try {
-            IActivityMonitor iam = (IActivityMonitor) Naming.lookup("//localhost/ActivityMonitor");
+            IActivityMonitor iam = (IActivityMonitor) Naming.lookup("//192.168.80.10/ActivityMonitor");
             List<IProcess> processList = iam.getListOfProcesses();
             for(IProcess process : processList){
                 System.out.println("PID : "+process.getPID()+", Nom : " + process.getName());
