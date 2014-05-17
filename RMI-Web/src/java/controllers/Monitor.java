@@ -10,6 +10,7 @@ import errors.database.DataBaseConnectionException;
 import errors.database.DataBaseConnectionInformationFileNotFoundException;
 import errors.database.DataBaseDriverMissingException;
 import errors.database.DataBaseInformationFileParsingException;
+import errors.fail.UnexpectedErrorException;
 import errors.rmi.NoActivityMonitorServerException;
 import errors.rmi.NoRMIServiceException;
 import errors.rmi.ServerRunTimeInternalErrorException;
@@ -59,7 +60,7 @@ public class Monitor extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DataBaseConnectionInformationFileNotFoundException, SQLException, DataBaseDriverMissingException, DataBaseInformationFileParsingException, DataBaseConnectionException, NoActivityMonitorServerException, NoRMIServiceException, ServerDidNotRespondException, ServerRunTimeInternalErrorException {
         //response.setContentType("text/html;charset=UTF-8");
         
-        
+        try{
         
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
@@ -150,31 +151,15 @@ public class Monitor extends HttpServlet {
         
         request.getRequestDispatcher("/WEB-INF/monitor.jsp").forward(request, response);
         
-        /*try (PrintWriter out = response.getWriter()) {
-            try {
-            processList = iam.getListOfProcesses();
-        } catch (InterruptedException ex) {
+        } catch(DataBaseConnectionInformationFileNotFoundException | SQLException | DataBaseDriverMissingException | DataBaseInformationFileParsingException | DataBaseConnectionException | NoActivityMonitorServerException | NoRMIServiceException | ServerDidNotRespondException | ServerRunTimeInternalErrorException ex) {
             Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (RemoteException ex) {
+            request.setAttribute("error", ex);
+            request.getRequestDispatcher("/WEB-INF/error.jsp").forward(request, response);
+        } catch (Exception ex){
             Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("error", new UnexpectedErrorException(ex));
+            request.getRequestDispatcher("/WEB-INF/error.jsp").forward(request, response);
         }
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet Monitor</title>");      
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet Monitor at " + request.getContextPath() + "</h1>");
-            out.println("Total : " + iam.getPhysicalMemory().getTotal() + " Mo <br>");
-            out.println("Used : " + iam.getPhysicalMemory().getUsed()+ " Mo <br>");
-            out.println("Free : " + iam.getPhysicalMemory().getFree()+ " Mo <br>");
-            out.println("CPU : " + iam.getCPU().getTotalUsed() + " % <br>");
-            for(IProcess process : processList){
-                out.println("PID : "+process.getPID()+", Nom : " + process.getName()+ "<br>");
-            }
-            out.println("</body>");
-            out.println("</html>");
-        }*/
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
