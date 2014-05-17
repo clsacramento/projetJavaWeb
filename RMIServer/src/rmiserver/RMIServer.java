@@ -31,10 +31,9 @@ public class RMIServer {
 //            iam.getListOfProcesses();
 //            iam.getPhysicalMemory();
 //            iam.getCPU();
-            Naming.rebind("//localhost/ActivityMonitor", iam);
+//            System.out.println(iam.getCPU().toString());
+            Naming.rebind("//192.168.80.10/ActivityMonitor", iam);
         } catch (RemoteException ex) {
-            Logger.getLogger(RMIServer.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
             Logger.getLogger(RMIServer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
