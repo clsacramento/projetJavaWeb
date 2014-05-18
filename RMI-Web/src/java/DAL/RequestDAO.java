@@ -14,6 +14,7 @@ import errors.database.DataBaseDriverMissingException;
 import errors.database.DataBaseInformationFileParsingException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -107,5 +108,47 @@ public class RequestDAO {
         }
         
         return 0;        
+    }
+    
+    public static ArrayList<HashMap> selectRequests() throws SQLException, DataBaseConnectionInformationFileNotFoundException, DataBaseDriverMissingException, DataBaseInformationFileParsingException, DataBaseConnectionException{
+        return DataBaseConnection.query("select * from history", "id_request,id_server,host,id_user,login,timestamp,id_type_request,type_request");
+    }
+    
+    public static ArrayList<HashMap> selectRequests(String date) throws SQLException, DataBaseConnectionInformationFileNotFoundException, DataBaseDriverMissingException, DataBaseInformationFileParsingException, DataBaseConnectionException{
+        java.sql.PreparedStatement stmt = DataBaseConnection.getStatement("select * from history where timestamp = ?");
+        stmt.setString(1,date);
+        return DataBaseConnection.query(stmt, "id_request,id_server,host,id_user,login,timestamp,id_type_request,type_request");
+    }
+    
+    public static ArrayList<HashMap> selectRequests(int typeRequestId) throws SQLException, DataBaseConnectionInformationFileNotFoundException, DataBaseDriverMissingException, DataBaseInformationFileParsingException, DataBaseConnectionException{
+        java.sql.PreparedStatement stmt = DataBaseConnection.getStatement("select * from history where id_type_request = ?");
+        stmt.setInt(1, typeRequestId);
+        return DataBaseConnection.query(stmt, "id_request,id_server,host,id_user,login,timestamp,id_type_request,type_request");
+    }
+    
+    public static ArrayList<HashMap> selectProcessList(int requestId) throws SQLException, DataBaseConnectionInformationFileNotFoundException, DataBaseDriverMissingException, DataBaseInformationFileParsingException, DataBaseConnectionException{
+        java.sql.PreparedStatement stmt = DataBaseConnection.getStatement("select * from process where id_request = ?");
+        stmt.setInt(1, requestId);
+        return DataBaseConnection.query(stmt, "PID,name,using_cpu,cpu_time,state,using_memory,user");
+    }
+    
+    public static HashMap selectCPU(int requestId) throws SQLException, DataBaseConnectionInformationFileNotFoundException, DataBaseDriverMissingException, DataBaseInformationFileParsingException, DataBaseConnectionException{
+        java.sql.PreparedStatement stmt = DataBaseConnection.getStatement("select * from cpu where id_request = ?");
+        stmt.setInt(1, requestId);
+        ArrayList<HashMap> result = DataBaseConnection.query(stmt, "total,user_load,system_load,idle");
+        if(!result.isEmpty()){
+            return result.get(0);
+        }
+        return null;
+    }
+    
+    public static HashMap selectMemory(int requestId) throws SQLException, DataBaseConnectionInformationFileNotFoundException, DataBaseDriverMissingException, DataBaseInformationFileParsingException, DataBaseConnectionException{
+        java.sql.PreparedStatement stmt = DataBaseConnection.getStatement("select * from memory where id_request = ?");
+        stmt.setInt(1, requestId);
+        ArrayList<HashMap> result = DataBaseConnection.query(stmt, "used,free,total");
+        if(!result.isEmpty()){
+            return result.get(0);
+        }
+        return null;
     }
 }

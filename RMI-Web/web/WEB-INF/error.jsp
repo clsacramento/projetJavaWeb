@@ -12,6 +12,9 @@
         <title>Exception occurred</title>
     </head>
     <body>
+        <div id="header">
+            <jsp:include page="menu.jsp"/>
+        </div>
         <h1>Error</h1>
         <% 
             Exception ex = (Exception)request.getAttribute("error");

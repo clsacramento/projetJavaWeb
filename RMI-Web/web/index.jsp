@@ -16,10 +16,11 @@
 <!DOCTYPE html>
 <HTML>
 <HEAD>
-    <TITLE>Accueil</TITLE>
+    <TITLE>Activity Monitor</TITLE>
     <meta charset="UTF-8">
 </HEAD>
 <BODY>
+    <H1>Activity Monitor</H1>
 <CENTER><BIG>Authentification</BIG></CENTER>
 <form name="form" method="post" action="UserController">
     <CENTER>Identifiant : <input type="text" name="login"></CENTER>

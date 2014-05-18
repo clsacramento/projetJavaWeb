@@ -12,10 +12,13 @@
 <!DOCTYPE html>
 <HTML>
 <HEAD>
-    <TITLE>Accueil</TITLE>
+    <TITLE>Monitor Server</TITLE>
     <meta charset="UTF-8">
 </HEAD>
 <BODY>
+<div id="header">
+    <jsp:include page="menu.jsp"/>
+</div>
 <CENTER><BIG>Informations serveur</BIG></CENTER>
 <form name="form" method="get" action="Monitor">
     <%

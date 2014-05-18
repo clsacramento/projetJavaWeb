@@ -174,8 +174,13 @@ public class DataBaseConnection {
         while (rs.next()) {
             HashMap row = new HashMap();
             for (String field : fields) {
-                String value = rs.getString(field);
-                row.put(field, value);
+                if(field.equals("timestamp")){
+                    row.put(field, rs.getTimestamp(field));
+                }
+                else{
+                    String value = rs.getString(field);
+                    row.put(field, value);
+                }
             }
             result.add(row);
         }

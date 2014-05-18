@@ -20,8 +20,13 @@ import java.util.HashMap;
  */
 public class User {
     private int id;
-    private String login;
+    private final String login;
     private String password;
+    
+    public User(int id, String login){
+        this.id = id;
+        this.login = login;
+    }
     
     public User(String login, String password){
         this.login = login;
@@ -40,5 +45,9 @@ public class User {
     
     public int getId(){
         return this.id;
+    }
+    
+    public String getLogin(){
+        return this.login;
     }
 }

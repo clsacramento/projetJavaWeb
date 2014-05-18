@@ -13,6 +13,7 @@ import errors.database.DataBaseDriverMissingException;
 import errors.database.DataBaseInformationFileParsingException;
 import interfaces.IProcess;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -21,8 +22,13 @@ import java.util.List;
  * @author cynthia
  */
 public class RequestProcess extends Request{
-    private final List<IProcess> processList;
+    private List<IProcess> processList;
     private HashMap <Integer,IProcess> processesRequestsIds;
+    
+    public RequestProcess(HashMap requestDAO){
+        super(requestDAO);
+        this.processList = null;
+    }
     
     public RequestProcess(Server server, User user, String typeRequest, List<IProcess> processList) {
         super(server, user, typeRequest);
@@ -31,6 +37,25 @@ public class RequestProcess extends Request{
             this.date = this.processList.get(0).getDate();
         }
         this.processesRequestsIds = new HashMap<>();
+    }
+    
+    public List<IProcess> getProcessList() throws SQLException, DataBaseConnectionInformationFileNotFoundException, DataBaseDriverMissingException, DataBaseInformationFileParsingException, DataBaseConnectionException{
+        if(this.processList == null){
+            this.processList = new ArrayList<>();
+            ArrayList<HashMap> proReqs = RequestDAO.selectProcessList(this.id);
+            for(HashMap proReq : proReqs){
+                this.processList.add(new osutils.Process(
+                        (String) proReq.get("PID"), 
+                        (String) proReq.get("name"), 
+                        (String) proReq.get("using_cpu"), 
+                        (String) proReq.get("cpu_time"), 
+                        (String) proReq.get("state"), 
+                        (String) proReq.get("using_memory"), 
+                        (String) proReq.get("user")));
+                        
+            }
+        }
+        return this.processList;
     }
 
     @Override
@@ -50,6 +75,25 @@ public class RequestProcess extends Request{
                 this.processesRequestsIds.put(processId, process);
             }
         }
+    }
+
+    @Override
+        public HashMap<String, String> getDetails()throws SQLException, DataBaseConnectionInformationFileNotFoundException, DataBaseDriverMissingException, DataBaseInformationFileParsingException, DataBaseConnectionException {
+        HashMap<String,String> details = new HashMap<>();
+        
+        this.getProcessList();
+        
+        for(IProcess p : this.processList){
+            details.put(p.getPID(), 
+                            p.getName()+","+
+                            p.getUsingCPU()+","+
+                            p.getCPUTime()+","+
+                            p.getState()+","+
+                            p.getUsingMemory()+","+
+                            p.getUser());
+        }
+        
+        return details;
     }
     
 }

@@ -16,8 +16,11 @@
         <title>Monitor</title>
     </head>
     <body>
+    <div id="header">
+        <jsp:include page="menu.jsp"/>
+    </div>
     <center>
-        <h1>Monitor</h1>
+        <h1>Server response :</h1>
         <%! Object cpuExist; %>
         <% cpuExist = request.getAttribute("cpuExist"); %>
         <% if (cpuExist != null && cpuExist.toString().equals("true")) { %>
