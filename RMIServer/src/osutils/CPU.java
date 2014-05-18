@@ -6,26 +6,35 @@
 
 package osutils;
 
-import interfaces.ICPU;
 import java.io.Serializable;
-import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.Date;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author Damien
  */
-public class CPU implements ICPU {
+@XmlRootElement(name = "cpu")
+public class CPU implements Serializable {
 
-    private String total;
+    private String totalUsed;
     private String userLoad;
     private String systemLoad;
     private String idle;
     private Date date;
     
+    public CPU(){
+        this.totalUsed="";
+        this.userLoad="";
+        this.systemLoad="";
+        this.idle="";
+//        this.date = new Date();
+    }
+    
     public CPU (String total,String userLoad,String systemLoad,String idle) {
-        this.total = total;
+        this.totalUsed = total;
         this.userLoad = userLoad;
         this.systemLoad = systemLoad;
         this.idle = idle;
@@ -33,22 +42,22 @@ public class CPU implements ICPU {
         this.date = new Date();
     }
     
-    @Override
+    @XmlElement
     public String getTotalUsed() {
-        return total;
+        return totalUsed;
     }
 
-    @Override
+    @XmlElement
     public String getUserLoad() {
         return userLoad;
     }
 
-    @Override
+    @XmlElement
     public String getSystemLoad() {
         return systemLoad;
     }
 
-    @Override
+    @XmlElement
     public String getIdle() {
         return idle;
     }
@@ -56,13 +65,17 @@ public class CPU implements ICPU {
     
     @Override
     public String toString(){
-        return (this.total != null ? this.total+", "  : "" )+
+        return (this.totalUsed != null ? this.totalUsed+", "  : "" )+
                 (this.systemLoad != null ? this.systemLoad+"," : "" )+
                 (this.userLoad != null ? this.userLoad+"," : "" )+
                 (this.idle != null ? this.idle : "" );
     }
 
-    @Override
+    @XmlAttribute(name="date")
+    public String getStrDate(){
+        return this.date.toString();
+    }
+    
     public Date getDate() {
         return this.date;
     }

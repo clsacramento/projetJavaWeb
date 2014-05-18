@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
+import osutils.CPU;
+import osutils.Memory;
 
 /**
  * OS Activity Monitor Interface which provides functions to gather information
@@ -24,19 +26,19 @@ public interface IActivityMonitor extends Remote {
      * @throws java.lang.InterruptedException
      * @throws java.rmi.RemoteException
      */
-    public List<IProcess> getListOfProcesses() throws IOException,InterruptedException,RemoteException;
+    public List<osutils.Process> getListOfProcesses() throws IOException,InterruptedException,RemoteException;
     /**
      * 
      * @return IPhysicalMemory memory usage information.
      * @throws java.rmi.RemoteException
      * @throws java.lang.InterruptedException
      */
-    public IPhysicalMemory getPhysicalMemory() throws IOException,InterruptedException,RemoteException;
+    public Memory getPhysicalMemory() throws IOException,InterruptedException,RemoteException;
     /**
      * 
      * @return ICPU CPU usage information
      * @throws java.rmi.RemoteException
      * @throws java.lang.InterruptedException
      */
-    public ICPU getCPU() throws IOException,InterruptedException,RemoteException;
+    public CPU getCPU() throws IOException,InterruptedException,RemoteException;
 }

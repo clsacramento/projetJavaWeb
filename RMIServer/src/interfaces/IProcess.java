@@ -7,31 +7,32 @@
 package interfaces;
 
 import java.io.Serializable;
-import java.rmi.Remote;
-import java.rmi.RemoteException;
 import java.util.Date;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author cynthia
  */
+@XmlRootElement(name = "process")
 public interface IProcess extends Serializable {
     /**
      * 
      * @return int process id
-     * @throws java.rmi.RemoteException
      */
+    @XmlAttribute
     public String getPID();
     /**
      * 
      * @return String process command name
-     * @throws java.rmi.RemoteException
      */
+    @XmlElement
     public String getName();
     /**
      * %CPU
      * @return float process CPU usage 
-     * @throws java.rmi.RemoteException 
      */
     public String getUsingCPU();
     /**

@@ -6,22 +6,30 @@
 
 package osutils;
 
-import interfaces.IPhysicalMemory;
 import java.io.Serializable;
-import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.Date;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author Damien
  */
-public class Memory implements IPhysicalMemory{
+@XmlRootElement(name = "memory")
+public class Memory implements Serializable{
 
     private String used;
     private String free;
     private String total;
     private Date date;
+    
+    public Memory(){
+        this.used="";
+        this.free="";
+        this.total="";
+        this.date = new Date();
+    }
     
     public Memory (String total,String used,String free){
         this.total = total;
@@ -30,17 +38,17 @@ public class Memory implements IPhysicalMemory{
         
         this.date = new Date();
     }
-    @Override
+    @XmlElement
     public String getUsed(){
         return used;
     }
 
-    @Override
+    @XmlElement
     public String getFree(){
         return free;
     }
 
-    @Override
+    @XmlElement
     public String getTotal(){
         return total;
     }
@@ -52,7 +60,11 @@ public class Memory implements IPhysicalMemory{
                 (this.free != null ? this.free : "" );
     }
 
-    @Override
+    @XmlAttribute(name="date")
+    public String getStrDate(){
+        return this.date.toString();
+    }
+    
     public Date getDate() {
         return this.date;
     }

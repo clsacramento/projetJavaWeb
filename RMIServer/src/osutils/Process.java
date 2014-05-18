@@ -6,17 +6,18 @@
 
 package osutils;
 
-import interfaces.IProcess;
 import java.io.Serializable;
-import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.Date;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Class which implements a process.
  * @author cynthia
  */
-public class Process implements IProcess,Serializable{
+@XmlRootElement(name = "process")
+public class Process implements Serializable{
     private String pid;
     private String name;
     private String usingCPU;
@@ -27,6 +28,11 @@ public class Process implements IProcess,Serializable{
     
     private Date date;
 
+    public Process(){
+        this.pid = "test";
+        this.name = "process";
+    }
+    
     public Process(String pid,String name,String usingCPU,String cpuTime,String state,String usingMemory,String user){
         this.pid=pid;
         this.name=name;
@@ -39,42 +45,48 @@ public class Process implements IProcess,Serializable{
         this.date = new Date();
     }
     
-    @Override
+    
+    @XmlAttribute
     public String getPID(){
         return pid;
     }
 
-    @Override
+    
+    @XmlElement
     public String getName(){
         return name;
     }
 
-    @Override
+    @XmlElement
     public String getUsingCPU(){
         return usingCPU;
     }
 
-    @Override
+    @XmlElement
     public String getCPUTime(){
         return cpuTime;
     }
 
-    @Override
+    @XmlElement
     public String getState(){
         return state;
     }
 
-    @Override
+    @XmlElement
     public String getUsingMemory(){
         return usingMemory;
     }
 
-    @Override
+    @XmlElement
     public String getUser(){
         return user;
     }
     
-    @Override
+    @XmlAttribute(name="date")
+    public String getStrDate(){
+        return this.date.toString();
+    }
+    
     public Date getDate(){
         return this.date;        
     }

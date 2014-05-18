@@ -24,7 +24,7 @@ public class ActivityMonitorLinux implements IActivityMonitor{
     private java.lang.Process p;
 
     @Override
-    public ArrayList<IProcess> getListOfProcesses() throws IOException,InterruptedException {
+    public ArrayList<Process> getListOfProcesses() throws IOException,InterruptedException {
         p = Runtime.getRuntime().exec(ActivityMonitorLinux.command);
 //        int waitFor = p.waitFor();
 
@@ -41,12 +41,12 @@ public class ActivityMonitorLinux implements IActivityMonitor{
     }
 
     @Override
-    public IPhysicalMemory getPhysicalMemory() {
+    public Memory getPhysicalMemory() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public ICPU getCPU() {
+    public CPU getCPU() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

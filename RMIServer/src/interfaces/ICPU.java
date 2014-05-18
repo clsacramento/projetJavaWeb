@@ -8,15 +8,23 @@ package interfaces;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author cynthia
  */
+@XmlRootElement(name = "cpu")
 public interface ICPU extends Serializable{
+    @XmlElement
     public String getTotalUsed();
+    @XmlElement
     public String getUserLoad();
+    @XmlElement
     public String getSystemLoad();
+    @XmlElement
     public String getIdle();
+    @XmlElement
     public Date getDate();
 }

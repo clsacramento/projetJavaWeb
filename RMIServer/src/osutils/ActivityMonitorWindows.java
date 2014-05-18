@@ -41,9 +41,8 @@ public class ActivityMonitorWindows extends UnicastRemoteObject implements IActi
     }
 
     @Override
-    public ArrayList<IProcess> getListOfProcesses() throws IOException, InterruptedException {
-        
-        ArrayList<IProcess> arrayProcess = new ArrayList<>();
+    public ArrayList<Process> getListOfProcesses() throws IOException, InterruptedException {
+        ArrayList<Process> arrayProcess = new ArrayList<>();
         java.lang.Process p = Runtime.getRuntime().exec(processListCommand);
         BufferedReader reader
                 = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -73,7 +72,7 @@ public class ActivityMonitorWindows extends UnicastRemoteObject implements IActi
     }
 
     @Override
-    public IPhysicalMemory getPhysicalMemory() throws RemoteException, IOException {
+    public Memory getPhysicalMemory() throws RemoteException, IOException {
         String used = "";
         String free = "";
         String total = "";
@@ -115,7 +114,7 @@ public class ActivityMonitorWindows extends UnicastRemoteObject implements IActi
     }
 
     @Override
-    public ICPU getCPU() throws RemoteException, IOException {
+    public CPU getCPU() throws RemoteException, IOException {
         CPU cpuTotal = new CPU("","","","");
         
         java.lang.Process p = null;

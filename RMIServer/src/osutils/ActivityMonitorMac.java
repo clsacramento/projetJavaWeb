@@ -37,8 +37,8 @@ public class ActivityMonitorMac extends UnicastRemoteObject implements IActivity
     private static String cpuAndMemoryCommand = "top -R -l 1 ";
 
     @Override
-    public ArrayList<IProcess> getListOfProcesses() throws IOException,InterruptedException {
-        ArrayList<IProcess> arrayProcesses = new ArrayList<>();
+    public ArrayList<Process> getListOfProcesses() throws IOException,InterruptedException {
+        ArrayList<Process> arrayProcesses = new ArrayList<>();
         java.lang.Process p = Runtime.getRuntime().exec(ActivityMonitorMac.processListCommand);
 
         BufferedReader reader = 
@@ -73,7 +73,7 @@ public class ActivityMonitorMac extends UnicastRemoteObject implements IActivity
                 cmd += " "+str[i].replaceAll("/.+/", "");
             }
             
-            IProcess lineProcess = new Process(pid, cmd, cpu, time, stat, mem, user);
+            Process lineProcess = new Process(pid, cmd, cpu, time, stat, mem, user);
             
             
             
@@ -86,7 +86,7 @@ public class ActivityMonitorMac extends UnicastRemoteObject implements IActivity
     }
 
     @Override
-    public IPhysicalMemory getPhysicalMemory() throws IOException {
+    public Memory getPhysicalMemory() throws IOException {
         java.lang.Process p = Runtime.getRuntime().exec(ActivityMonitorMac.cpuAndMemoryCommand);
 
         BufferedReader reader = 
@@ -110,13 +110,13 @@ public class ActivityMonitorMac extends UnicastRemoteObject implements IActivity
         int f = Integer.parseInt(free);
         int total = u + f;
         
-        IPhysicalMemory mem = new Memory(total+"", used, free);
+        Memory mem = new Memory(total+"", used, free);
         
         return mem;
     }
 
     @Override
-    public ICPU getCPU() throws IOException {
+    public CPU getCPU() throws IOException {
         java.lang.Process p = Runtime.getRuntime().exec(ActivityMonitorMac.cpuAndMemoryCommand);
 
         BufferedReader reader = 
@@ -142,7 +142,7 @@ public class ActivityMonitorMac extends UnicastRemoteObject implements IActivity
         float s = Float.parseFloat(sys);
         float total = u + s;
         
-        ICPU cpu = new CPU(total+"", user, sys, idle);
+        CPU cpu = new CPU(total+"", user, sys, idle);
         
         return cpu;
         
