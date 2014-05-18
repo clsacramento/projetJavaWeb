@@ -22,15 +22,15 @@ import java.util.List;
  * @author cynthia
  */
 public class RequestProcess extends Request{
-    private List<IProcess> processList;
-    private HashMap <Integer,IProcess> processesRequestsIds;
+    private List<osutils.Process> processList;
+    private HashMap <Integer,osutils.Process> processesRequestsIds;
     
     public RequestProcess(HashMap requestDAO){
         super(requestDAO);
         this.processList = null;
     }
     
-    public RequestProcess(Server server, User user, String typeRequest, List<IProcess> processList) {
+    public RequestProcess(Server server, User user, String typeRequest, List<osutils.Process> processList) {
         super(server, user, typeRequest);
         this.processList = processList;
         if(processList.size()>0){
@@ -39,7 +39,7 @@ public class RequestProcess extends Request{
         this.processesRequestsIds = new HashMap<>();
     }
     
-    public List<IProcess> getProcessList() throws SQLException, DataBaseConnectionInformationFileNotFoundException, DataBaseDriverMissingException, DataBaseInformationFileParsingException, DataBaseConnectionException{
+    public List<osutils.Process> getProcessList() throws SQLException, DataBaseConnectionInformationFileNotFoundException, DataBaseDriverMissingException, DataBaseInformationFileParsingException, DataBaseConnectionException{
         if(this.processList == null){
             this.processList = new ArrayList<>();
             ArrayList<HashMap> proReqs = RequestDAO.selectProcessList(this.id);
@@ -62,7 +62,7 @@ public class RequestProcess extends Request{
     public void saveRequestDetails() throws SQLException, DataBaseDriverMissingException, DataBaseConnectionInformationFileNotFoundException, DataBaseInformationFileParsingException, DataBaseConnectionException {
         this.saveRequest();
         if(processList.size()>0){
-            for(IProcess process : processList){
+            for(osutils.Process process : processList){
                 int processId = RequestDAO.insertRequestProcess(
                         this.id, 
                         process.getPID(), 
@@ -83,7 +83,7 @@ public class RequestProcess extends Request{
         
         this.getProcessList();
         
-        for(IProcess p : this.processList){
+        for(osutils.Process p : this.processList){
             details.put(p.getPID(), 
                             p.getName()+","+
                             p.getUsingCPU()+","+

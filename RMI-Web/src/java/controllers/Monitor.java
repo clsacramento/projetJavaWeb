@@ -41,6 +41,8 @@ import models.RequestMemory;
 import models.RequestProcess;
 import models.Server;
 import models.User;
+import osutils.CPU;
+import osutils.Memory;
 
 /**
  *
@@ -100,7 +102,7 @@ public class Monitor extends HttpServlet {
         if (cpuExist) {
             request.setAttribute("cpuExist", true);
             try {
-                ICPU cp = iam.getCPU();
+                CPU cp = iam.getCPU();
                 request.setAttribute("icpu", cp);
                 
                 RequestCPU rCPU = new RequestCPU(server, user, "getCPU", cp);
@@ -119,7 +121,7 @@ public class Monitor extends HttpServlet {
         if (memExist) {
             request.setAttribute("memExist", true);
             try {
-                IPhysicalMemory im = iam.getPhysicalMemory();
+                Memory im = iam.getPhysicalMemory();
                 request.setAttribute("imem", im);
                 
                 RequestMemory rMem = new RequestMemory(server, user, "getPhysicalMemory", im);
@@ -135,7 +137,7 @@ public class Monitor extends HttpServlet {
         if (processExist) {
             request.setAttribute("processExist", true);
             try {
-                List<IProcess> pr = iam.getListOfProcesses();
+                List<osutils.Process> pr = iam.getListOfProcesses();
                 request.setAttribute("iprocess", pr);
                 
                 RequestProcess rPro = new RequestProcess(server, user, "getListOfProcesses", pr);

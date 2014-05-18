@@ -22,7 +22,7 @@ import osutils.Memory;
  * @author cynthia
  */
 public class RequestMemory extends Request {
-    private IPhysicalMemory mem;
+    private Memory mem;
     private int idRequestMemory;
     
     public RequestMemory(HashMap requestDAO){
@@ -30,13 +30,13 @@ public class RequestMemory extends Request {
         mem = null;
     }
 
-    public RequestMemory(Server server, User user, String typeRequest, IPhysicalMemory mem) {
+    public RequestMemory(Server server, User user, String typeRequest, Memory mem) {
         super(server, user, typeRequest);
         this.mem = mem;
         this.date = mem.getDate();
     }
     
-    public IPhysicalMemory getMemory() throws SQLException, DataBaseConnectionInformationFileNotFoundException, DataBaseDriverMissingException, DataBaseInformationFileParsingException, DataBaseConnectionException{
+    public Memory getMemory() throws SQLException, DataBaseConnectionInformationFileNotFoundException, DataBaseDriverMissingException, DataBaseInformationFileParsingException, DataBaseConnectionException{
         if(this.mem == null){
             HashMap memFields = RequestDAO.selectMemory(this.id);
             if(memFields != null){

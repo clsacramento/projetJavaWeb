@@ -14,7 +14,7 @@ package errors.rmi;
 public class NoRMIServiceException extends Exception{
 
     public NoRMIServiceException(String host) {
-        super("Trying to acces a RMI service in host << "+host+" >> but no RMI service found in this host.");
+        super("Trying to acces a RMI service in host << "+host+" >> but no RMI service found in this host. Is the RMI Registry running?");
 //        super("Trying to acces a RMI service but RMI registry is not started.\n"+
 //                "Try running registry command, for example : rmiregistry -J-Djava.rmi.server.useCodebaseOnly=false");
     }

@@ -13,10 +13,7 @@ import errors.database.DataBaseDriverMissingException;
 import errors.database.DataBaseInformationFileParsingException;
 import interfaces.ICPU;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import osutils.CPU;
 
 /**
@@ -25,7 +22,7 @@ import osutils.CPU;
  */
 public class RequestCPU extends Request
 {
-    private ICPU cpu;
+    private CPU cpu;
     private int idRequestCPU;
     
     public RequestCPU(HashMap requestDAO){
@@ -33,13 +30,13 @@ public class RequestCPU extends Request
         cpu = null;
     }
     
-    public RequestCPU(Server server, User user, String typeRequest, ICPU cpu) {
+    public RequestCPU(Server server, User user, String typeRequest, CPU cpu) {
         super(server, user, typeRequest);
         this.cpu = cpu;
         this.date = cpu.getDate();
     }
     
-    public ICPU getCPU() throws SQLException, DataBaseConnectionInformationFileNotFoundException, DataBaseDriverMissingException, DataBaseInformationFileParsingException, DataBaseConnectionException{
+    public CPU getCPU() throws SQLException, DataBaseConnectionInformationFileNotFoundException, DataBaseDriverMissingException, DataBaseInformationFileParsingException, DataBaseConnectionException{
         if(this.cpu == null){
             HashMap cpuFields = RequestDAO.selectCPU(this.id);
             if(cpuFields != null){
