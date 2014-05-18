@@ -27,7 +27,7 @@ public class Process implements IProcess,Serializable{
     
     private Date date;
 
-    Process(String pid,String name,String usingCPU,String cpuTime,String state,String usingMemory,String user){
+    public Process(String pid,String name,String usingCPU,String cpuTime,String state,String usingMemory,String user){
         this.pid=pid;
         this.name=name;
         this.usingCPU=usingCPU;

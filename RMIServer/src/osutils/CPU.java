@@ -24,7 +24,7 @@ public class CPU implements ICPU {
     private String idle;
     private Date date;
     
-    CPU (String total,String userLoad,String systemLoad,String idle) {
+    public CPU (String total,String userLoad,String systemLoad,String idle) {
         this.total = total;
         this.userLoad = userLoad;
         this.systemLoad = systemLoad;
