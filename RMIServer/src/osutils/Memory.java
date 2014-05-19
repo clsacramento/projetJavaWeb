@@ -39,16 +39,26 @@ public class Memory implements Serializable{
         this.date = new Date();
     }
     @XmlElement
+    public void setUsed(String used){
+        
+        this.used = used;
+    }
     public String getUsed(){
         return used;
     }
 
     @XmlElement
+    public void setFree(String free){
+        this.free = free;
+    }
     public String getFree(){
         return free;
     }
 
     @XmlElement
+    public void setTotal(String total){
+        this.total = total;
+    }
     public String getTotal(){
         return total;
     }
@@ -61,8 +71,14 @@ public class Memory implements Serializable{
     }
 
     @XmlAttribute(name="date")
-    public String getStrDate(){
-        return this.date.toString();
+    public void setLongDate(long time){
+        this.date = new Date(time);
+    }
+    public long getLongDate(){
+        if(this.date == null){
+            this.date = new Date();
+        }
+        return this.date.getTime();
     }
     
     public Date getDate() {

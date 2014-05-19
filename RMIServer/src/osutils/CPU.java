@@ -30,7 +30,7 @@ public class CPU implements Serializable {
         this.userLoad="";
         this.systemLoad="";
         this.idle="";
-//        this.date = new Date();
+        this.date = new Date();
     }
     
     public CPU (String total,String userLoad,String systemLoad,String idle) {
@@ -43,21 +43,33 @@ public class CPU implements Serializable {
     }
     
     @XmlElement
+    public void setTotalUsed(String totalUsed){
+        this.totalUsed = totalUsed;
+    }
     public String getTotalUsed() {
         return totalUsed;
     }
 
     @XmlElement
+    public void setUserLoad(String userLoad){
+        this.userLoad = userLoad;
+    }
     public String getUserLoad() {
         return userLoad;
     }
 
     @XmlElement
+    public void setSystemLoad(String systemLoad){
+        this.systemLoad = systemLoad;
+    }
     public String getSystemLoad() {
         return systemLoad;
     }
 
     @XmlElement
+    public void setIdle(String idle){
+        this.idle = idle;
+    }
     public String getIdle() {
         return idle;
     }
@@ -72,8 +84,14 @@ public class CPU implements Serializable {
     }
 
     @XmlAttribute(name="date")
-    public String getStrDate(){
-        return this.date.toString();
+    public void setLongDate(long time){
+        this.date = new Date(time);
+    }
+    public long getLongDate(){
+        if(this.date == null){
+            this.date = new Date();
+        }
+        return this.date.getTime();
     }
     
     public Date getDate() {
