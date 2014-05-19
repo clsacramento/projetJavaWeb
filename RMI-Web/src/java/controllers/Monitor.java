@@ -11,31 +11,30 @@ import errors.database.DataBaseConnectionInformationFileNotFoundException;
 import errors.database.DataBaseDriverMissingException;
 import errors.database.DataBaseInformationFileParsingException;
 import errors.fail.UnexpectedErrorException;
+import errors.remote.RemoteErrorException;
+import errors.rest.ExceptionXml;
 import errors.rmi.NoActivityMonitorServerException;
 import errors.rmi.NoRMIServiceException;
 import errors.rmi.ServerRunTimeInternalErrorException;
 import errors.rmi.ServerDidNotRespondException;
 import interfaces.IActivityMonitor;
-import interfaces.ICPU;
-import interfaces.IPhysicalMemory;
 import interfaces.IProcess;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.MalformedURLException;
-import java.rmi.Naming;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.ws.rs.ClientErrorException;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import models.RequestCPU;
 import models.RequestMemory;
 import models.RequestProcess;
@@ -93,71 +92,74 @@ public class Monitor extends HttpServlet {
         String host = request.getParameter("url");
         Server server = new Server(host);
 
-        iam = server.getMonitor();
+        RestClientController restClient = new RestClientController();
         
-        if(server.getId()==0){
-            server = ServerController.insertServer(host);
-        }
            
         if (cpuExist) {
             request.setAttribute("cpuExist", true);
-            try {
-                CPU cp = iam.getCPU();
+            
+                CPU cp = restClient.getCPU(CPU.class, "", host);
+                
+                if("".equals(cp.getTotalUsed())){
+                    ExceptionXml eXml = restClient.getLastException(ExceptionXml.class);
+                    throw new RemoteErrorException(eXml);
+                }
+                
                 request.setAttribute("icpu", cp);
                 
                 RequestCPU rCPU = new RequestCPU(server, user, "getCPU", cp);
                 rCPU.saveRequestDetails();
                 
-            } catch (RemoteException ex){
-                throw new ServerDidNotRespondException(host,"getCPU");
-            } 
-            catch (    IOException | InterruptedException ex) {
-                Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
-                throw new ServerRunTimeInternalErrorException(host, "getCPU");
-            }
+            
            
         } 
         
         if (memExist) {
             request.setAttribute("memExist", true);
-            try {
-                Memory im = iam.getPhysicalMemory();
+                Memory im = restClient.getPhysicalMemory(Memory.class, "", host);
+                
+                if("".equals(im.getTotal())){
+                    ExceptionXml eXml = restClient.getLastException(ExceptionXml.class);
+                    throw new RemoteErrorException(eXml);
+                }
+                
                 request.setAttribute("imem", im);
                 
                 RequestMemory rMem = new RequestMemory(server, user, "getPhysicalMemory", im);
                 rMem.saveRequestDetails();
-            } catch (RemoteException ex){
-                throw new ServerDidNotRespondException(host,"getPhysicalMemory");
-            } catch (    IOException | InterruptedException ex) {
-                Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
-                throw new ServerRunTimeInternalErrorException(host, "getPhysicalMemory");
-            }
+            
            
         }
         if (processExist) {
             request.setAttribute("processExist", true);
-            try {
-                List<osutils.Process> pr = iam.getListOfProcesses();
+            ProcessesList plist = restClient.getProcessList(ProcessesList.class, "", host);
+                List<osutils.Process> pr = plist.getList();
+                
+                if(pr==null||pr.isEmpty()){
+                    ExceptionXml eXml = restClient.getLastException(ExceptionXml.class);
+                    throw new RemoteErrorException(eXml);
+                }
+                
                 request.setAttribute("iprocess", pr);
                 
                 RequestProcess rPro = new RequestProcess(server, user, "getListOfProcesses", pr);
                 rPro.saveRequestDetails();
-            } catch (RemoteException ex){
-                throw new ServerDidNotRespondException(host,"getListOfProcesses");
-            } catch (    IOException | InterruptedException ex) {
-                Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
-                throw new ServerRunTimeInternalErrorException(host, "getListOfProcesses");
-            }
+            
            
+        }
+        
+        if(server.getId()==0){
+            ServerController.insertServer(host);
         }
         
         request.getRequestDispatcher("/WEB-INF/monitor.jsp").forward(request, response);
         
-        } catch(DataBaseConnectionInformationFileNotFoundException | SQLException | DataBaseDriverMissingException | DataBaseInformationFileParsingException | DataBaseConnectionException | NoActivityMonitorServerException | NoRMIServiceException | ServerDidNotRespondException | ServerRunTimeInternalErrorException ex) {
-            Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
+        }  catch(DataBaseConnectionException | DataBaseConnectionInformationFileNotFoundException | DataBaseDriverMissingException | DataBaseInformationFileParsingException | RemoteErrorException ex){
+             Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
             request.setAttribute("error", ex);
             request.getRequestDispatcher("/WEB-INF/error.jsp").forward(request, response);
-        } catch (Exception ex){
+        }
+        catch ( IOException | SQLException | ServletException | ClientErrorException ex){
             Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
             request.setAttribute("error", new UnexpectedErrorException(ex));
             request.getRequestDispatcher("/WEB-INF/error.jsp").forward(request, response);
@@ -218,4 +220,28 @@ public class Monitor extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+}
+
+
+@XmlRootElement(name="processes")
+class ProcessesList{
+    
+    
+     List<osutils.Process> list;
+
+//    public ProcessesList(){}
+//    
+//    
+//    public ProcessesList(List<osutils.Process> list){
+//    	this.list=list;
+//    }
+
+    @XmlElement(name = "process") 
+    public List<osutils.Process> getList(){
+    	return list;
+    }
+    
+    public void setList(List<osutils.Process> list){
+        this.list = list;
+    }
 }

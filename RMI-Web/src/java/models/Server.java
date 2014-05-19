@@ -7,6 +7,7 @@
 package models;
 
 import DAL.ServerDAO;
+import controllers.RestClientController;
 import errors.database.DataBaseConnectionException;
 import errors.database.DataBaseConnectionInformationFileNotFoundException;
 import errors.database.DataBaseDriverMissingException;
@@ -30,6 +31,8 @@ import java.util.logging.Logger;
 public class Server {
     private int id;
     private String host;
+    
+    
 
     public Server(int id, String host) {
         this.id = id;
@@ -62,20 +65,6 @@ public class Server {
         return host;
     }
     
-    public IActivityMonitor getMonitor() throws NoActivityMonitorServerException, MalformedURLException, NoRMIServiceException
-    {
-        try {
-            String url = "//"+this.host+"/ActivityMonitor";
-            IActivityMonitor iam = (IActivityMonitor) Naming.lookup(url);
-            return iam;
-        } catch (NotBoundException ex) {
-            throw new NoActivityMonitorServerException(this.host);
-        } catch (MalformedURLException ex) {
-            throw new MalformedURLException("The hostName/ipAddress << "+this.host+" >> is not valid.");
-        } catch (RemoteException ex) {
-//            throw new NoActivityMonitorServerException(this.host);
-            throw new NoRMIServiceException(this.host);
-        }
-    }
+    
     
 }

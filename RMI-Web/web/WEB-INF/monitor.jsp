@@ -3,6 +3,8 @@
     Created on : 22 mars 2014, 22:57:23
     Author     : Damien
 --%>
+<%@page import="osutils.Memory"%>
+<%@page import="osutils.CPU"%>
 <%@page import="org.apache.jasper.tagplugins.jstl.ForEach"%>
 <%@page import="java.util.List"%>
 <%@page import="interfaces.IProcess"%>
@@ -27,7 +29,7 @@
         <%! String cpuTotal;
         %>
         <%
-            ICPU cp = (ICPU) request.getAttribute("icpu");
+            CPU cp = (CPU) request.getAttribute("icpu");
             cpuTotal = cp.getTotalUsed();
         %>
         <table BORDER="1">
@@ -47,7 +49,7 @@
             String freeMem;
         %>
         <%
-            IPhysicalMemory im = (IPhysicalMemory) request.getAttribute("imem");
+            Memory im = (Memory) request.getAttribute("imem");
             totalMem = im.getTotal();
             usedMem = im.getUsed();
             freeMem = im.getFree();
@@ -88,8 +90,8 @@
             String proc;
         %>
         <%
-            List<IProcess> pr = (List<IProcess>) request.getAttribute("iprocess");
-            for (IProcess p:pr) {
+            List<osutils.Process> pr = (List<osutils.Process>) request.getAttribute("iprocess");
+            for (osutils.Process p:pr) {
                 pid = p.getPID();
                 name = p.getName();
                 mem = p.getUsingMemory();
