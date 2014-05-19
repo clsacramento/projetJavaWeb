@@ -101,7 +101,7 @@ public class RmiApiResource {
             IActivityMonitor iam = rmi.getMonitor();
             List<osutils.Process> list = (List<osutils.Process>) iam.getListOfProcesses();
             return list;
-        } catch (IOException | InterruptedException | NoActivityMonitorServerException | NoRMIServiceException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(RmiApiResource.class.getName()).log(Level.SEVERE, null, ex);
             HttpSession session = request.getSession();
             session.setAttribute("exception", new ExceptionXml(ex));
@@ -130,7 +130,7 @@ public class RmiApiResource {
             IActivityMonitor iam = rmi.getMonitor();
             CPU cpu = (CPU) iam.getCPU();
             return cpu;
-        } catch (NoActivityMonitorServerException | NoRMIServiceException | IOException | InterruptedException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(RmiApiResource.class.getName()).log(Level.SEVERE, null, ex);
             HttpSession session = request.getSession();
             session.setAttribute("exception", new ExceptionXml(ex));
@@ -155,13 +155,13 @@ public class RmiApiResource {
             if("".equals(host)){
                 host = "localhost";
             }
-            System.out.println("host: "+host);
+            System.out.println("host mem: "+host);
             
             Server rmi = new Server(host);
             IActivityMonitor iam = rmi.getMonitor();
             Memory mem =  iam.getPhysicalMemory();
             return mem;
-        } catch (NoActivityMonitorServerException | NoRMIServiceException | IOException | InterruptedException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(RmiApiResource.class.getName()).log(Level.SEVERE, null, ex);
             HttpSession session = request.getSession();
             session.setAttribute("exception", new ExceptionXml(ex));
@@ -171,16 +171,7 @@ public class RmiApiResource {
        
     }
     
-    /**
-     * Retrieves representation of an instance of hello.HelloRessource
-     * @return an instance of java.lang.String
-     */
-    @GET
-    @Produces("text/xml")
-    @Path("hello")
-    public XXXX getHelloWorld() {
-        return new XXXX();
-    }
+    
 
     /**
      * PUT method for updating or creating an instance of RmiApiResource
