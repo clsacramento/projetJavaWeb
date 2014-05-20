@@ -22,6 +22,7 @@ public class RMIServer {
 
     /**
      * Ne pas oublier la registry :
+     * -Djava.rmi.server.hostname=192.168.80.10
      * rmiregistry -J-Djava.rmi.server.useCodebaseOnly=false
      * @param args the command line arguments
      */
@@ -32,7 +33,7 @@ public class RMIServer {
 //            iam.getPhysicalMemory();
 //            iam.getCPU();
 //            System.out.println(iam.getCPU().toString());
-            Naming.rebind("//192.168.80.10/ActivityMonitor", iam);
+            Naming.rebind("//192.168.80.14/ActivityMonitor", iam);
         } catch (RemoteException ex) {
             Logger.getLogger(RMIServer.class.getName()).log(Level.SEVERE, null, ex);
         }
