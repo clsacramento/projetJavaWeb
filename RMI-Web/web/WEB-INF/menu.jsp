@@ -9,7 +9,15 @@
 <!DOCTYPE html>
 <%
     User user = (User) session.getAttribute("user");
-    String login = user.getLogin();
+    String login;
+    if(user == null){
+         login = " ";
+    }
+    else
+    {
+         login = user.getLogin();
+    }
+    
 %>
 <table>
     <tr>
