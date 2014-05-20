@@ -22,9 +22,9 @@ public class RMIClient {
      */
     public static void main(String[] args) {
         try {
-            IActivityMonitor iam = (IActivityMonitor) Naming.lookup("//192.168.80.10/ActivityMonitor");
-            List<IProcess> processList = iam.getListOfProcesses();
-            for(IProcess process : processList){
+            IActivityMonitor iam = (IActivityMonitor) Naming.lookup("//192.168.80.14/ActivityMonitor");
+            List<osutils.Process> processList = iam.getListOfProcesses();
+            for(osutils.Process process : processList){
                 System.out.println("PID : "+process.getPID()+", Nom : " + process.getName());
             }
             System.out.println(iam.getPhysicalMemory());
