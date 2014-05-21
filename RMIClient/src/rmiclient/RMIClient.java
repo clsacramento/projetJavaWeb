@@ -18,6 +18,8 @@ import java.util.List;
 public class RMIClient {
 
     /**
+     * Just connects to a server, execute the three exposed commands (getCPU,
+     * getPhysicalMemory, getListOfProcesses
      * @param args the command line arguments
      */
     public static void main(String[] args) {
