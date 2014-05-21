@@ -24,7 +24,7 @@ public class RMIServer {
      * Ne pas oublier d'exécuter la registry :
      * rmiregistry -J-Djava.rmi.server.useCodebaseOnly=false
      * 
-     * Si ce serveur n'écute pas usr localhost, ajouter à propriétés "run"
+     * Si ce serveur n'écoute pas usr localhost, ajouter à propriétés "run"
      * -Djava.rmi.server.hostname=192.168.80.10
      * @param args the command line arguments
      */
@@ -35,7 +35,7 @@ public class RMIServer {
 //            iam.getPhysicalMemory();
 //            iam.getCPU();
 //            System.out.println(iam.getCPU().toString());
-            Naming.rebind("//192.168.80.14/ActivityMonitor", iam);
+            Naming.rebind("//localhost/ActivityMonitor", iam);
         } catch (RemoteException ex) {
             Logger.getLogger(RMIServer.class.getName()).log(Level.SEVERE, null, ex);
         }
