@@ -12,25 +12,30 @@ import osutils.ActivityMonitorMac;
 import osutils.ActivityMonitorWindows;
 
 /**
- *
+ * Server Operating System
+ * 
+ * Detects the server OS to provide the suitable Activity Monitor
  * @author cynthia
  */
 public class ServerOS {
 
     /**
-     * os.name pour Mac
+     * Value used to the detect Mac OS
+     * os.name for Mac
      */
     public static final String MAC_OS = "Mac";
     
 
     /**
-     * os.name pour Windows
+     * Value to detect Windows systems
+     * os.name for Windows
      */
     public static final String WINDOWS_OS = "Windows";
     
 
     /**
-     * os.name pour Linux
+     * String to detect Linux/Unix systems
+     * os.name for Linux
      */
     public static final String LINUX_OS = "Linux";
     

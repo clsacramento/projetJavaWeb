@@ -5,10 +5,7 @@
  */
 package osutils;
 
-import interfaces.IProcess;
 import interfaces.IActivityMonitor;
-import interfaces.ICPU;
-import interfaces.IPhysicalMemory;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -33,13 +30,26 @@ public class ActivityMonitorWindows extends UnicastRemoteObject implements IActi
      */
     private static String processListCommand = "cmd.exe /c powershell.exe ../../cmd.ps1 process";
 
+    /**
+     * Command to get CPU usage
+     */
     private static String cpuCommand = "cmd.exe /c powershell.exe ../../cmd.ps1 cpu";
     
+    /**
+     * Command to get memory usage
+     */
     private static String commandMemory = "cmd.exe /c powershell.exe ../../cmd.ps1 used_mem";
 
     public ActivityMonitorWindows() throws RemoteException {
     }
 
+    /**
+     * Uses power shell to get list of processes running.
+     * Informations per process : pid, name, cpu time and using memory.
+     * @return ArrayList<Process>
+     * @throws IOException
+     * @throws InterruptedException 
+     */
     @Override
     public ArrayList<Process> getListOfProcesses() throws IOException, InterruptedException {
         ArrayList<Process> arrayProcess = new ArrayList<>();
@@ -71,6 +81,13 @@ public class ActivityMonitorWindows extends UnicastRemoteObject implements IActi
         return arrayProcess;
     }
 
+    /**
+     * Uses power shell to retrieve memory information.
+     * The command provides total, used and free memory values.
+     * @return Memory
+     * @throws RemoteException
+     * @throws IOException 
+     */
     @Override
     public Memory getPhysicalMemory() throws RemoteException, IOException {
         String used = "";
@@ -113,6 +130,13 @@ public class ActivityMonitorWindows extends UnicastRemoteObject implements IActi
         return mem;
     }
 
+    /**
+     * Gets CPU usage information with power shell.
+     * The command gets total percentage of CPU usage.
+     * @return CPU
+     * @throws RemoteException
+     * @throws IOException 
+     */
     @Override
     public CPU getCPU() throws RemoteException, IOException {
         CPU cpuTotal = new CPU("","","","");

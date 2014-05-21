@@ -8,11 +8,15 @@ package errors.rmi;
 
 /**
  * This exception is thrown when attempting to access a RMI service in a host
- * but it does not implement RMI
+ * but it does not implement RMI or the RMI registry is not started.
  * @author cynthia
  */
 public class NoRMIServiceException extends Exception{
-
+     /**
+      * Creates an exception containing an explicative message including host
+      * name or address the user is trying to access.
+      * @param host 
+      */
     public NoRMIServiceException(String host) {
         super("Trying to acces a RMI service in host << "+host+" >> but no RMI service found in this host. Is the RMI Registry running?");
 //        super("Trying to acces a RMI service but RMI registry is not started.\n"+

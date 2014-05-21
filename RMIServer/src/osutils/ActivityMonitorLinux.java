@@ -16,7 +16,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 /**
- * Activity Monitor for Mac OSX.
+ * Activity Monitor for Linux/Unix systems.
  * @author cynthia
  */
 public class ActivityMonitorLinux implements IActivityMonitor{

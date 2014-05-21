@@ -13,15 +13,28 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
+ * Physical Memory state
+ * 
+ * This class provides informations on the server physical memory usage.
  * @author Damien
  */
 @XmlRootElement(name = "memory")
 public class Memory implements Serializable{
-
+    /**
+     * Amount in Mo of memory used
+     */
     private String used;
+    /**
+     * Fre space in Mo
+     */
     private String free;
+    /**
+     * The total memory (Mo)
+     */
     private String total;
+    /**
+     * Timestamp of the moment these informations were read.
+     */
     private Date date;
     
     public Memory(){

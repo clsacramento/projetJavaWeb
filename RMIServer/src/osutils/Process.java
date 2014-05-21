@@ -13,19 +13,43 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Class which implements a process.
+ * Process information.
+ * Information of a process running in a given instant.
  * @author cynthia
  */
 @XmlRootElement(name = "process")
 public class Process implements Serializable{
+    /**
+     * Process' PID
+     */
     private String pid;
+    /**
+     * Name or command of the running process
+     */
     private String name;
+    /**
+     * Percentage of using CPU by the process
+     */
     private String usingCPU;
+    /**
+     * CPU time consumed by this process
+     */
     private String cpuTime;
+    /**
+     * Process current state
+     */
     private String state;
+    /**
+     * Amount of memory being used by the process
+     */
     private String usingMemory;
+    /**
+     * User which has executed the process
+     */
     private String user;
-    
+    /**
+     * Timestamp of the moment the information about the process was treated.
+     */
     private Date date;
 
     public Process(){

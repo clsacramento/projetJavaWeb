@@ -6,14 +6,10 @@
 
 package osutils;
 
-import interfaces.IProcess;
 import interfaces.IActivityMonitor;
-import interfaces.ICPU;
-import interfaces.IPhysicalMemory;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -34,8 +30,20 @@ public class ActivityMonitorMac extends UnicastRemoteObject implements IActivity
      */
     private static String processListCommand="ps -ax -O %cpu,%mem,user,wq,rss";
     
+    /**
+     * Command to get CPU and Memory usage information
+     */
     private static String cpuAndMemoryCommand = "top -R -l 1 ";
 
+    /**
+     * Runs "ps" command to retrieve informations about the processes running
+     * in the system.
+     * Informations of each processes : PID, name (command), % of cpu using,
+     * cpu time, state, memory and user
+     * @return ArrayList<Process> proceses list
+     * @throws IOException
+     * @throws InterruptedException 
+     */
     @Override
     public ArrayList<Process> getListOfProcesses() throws IOException,InterruptedException {
         ArrayList<Process> arrayProcesses = new ArrayList<>();
@@ -82,9 +90,15 @@ public class ActivityMonitorMac extends UnicastRemoteObject implements IActivity
             arrayProcesses.add(lineProcess);
         }
         return arrayProcesses;
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * Runs top non interactive to retrive the physical memory information.
+     * This command returns used and free memory.
+     * The function uses theses values to calculate the total memory.
+     * @return Memory
+     * @throws IOException 
+     */
     @Override
     public Memory getPhysicalMemory() throws IOException {
         java.lang.Process p = Runtime.getRuntime().exec(ActivityMonitorMac.cpuAndMemoryCommand);
@@ -115,6 +129,13 @@ public class ActivityMonitorMac extends UnicastRemoteObject implements IActivity
         return mem;
     }
 
+    /**
+     * Runs "top" to get the CPU usage state on the server.
+     * Top returns percentage o usage by the user, by the system and in idle.
+     * This function calculages the toal usage by summing user and system %'s.
+     * @return
+     * @throws IOException 
+     */
     @Override
     public CPU getCPU() throws IOException {
         java.lang.Process p = Runtime.getRuntime().exec(ActivityMonitorMac.cpuAndMemoryCommand);
@@ -145,8 +166,6 @@ public class ActivityMonitorMac extends UnicastRemoteObject implements IActivity
         CPU cpu = new CPU(total+"", user, sys, idle);
         
         return cpu;
-        
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

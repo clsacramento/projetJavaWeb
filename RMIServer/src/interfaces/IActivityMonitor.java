@@ -16,11 +16,15 @@ import osutils.Memory;
 /**
  * OS Activity Monitor Interface which provides functions to gather information
  * about processes running, memory and CPU used.
+ * 
+ * All results give informations about the current state of the server. It is
+ * important to notice that these are very volatil informations, and may not be
+ * true in any instant following the imediate.
  * @author cynthia
  */
 public interface IActivityMonitor extends Remote {
     /**
-     * 
+     * Gets list of processes currently running
      * @return ArrayList running processes list
      * @throws java.io.IOException
      * @throws java.lang.InterruptedException
@@ -28,15 +32,16 @@ public interface IActivityMonitor extends Remote {
      */
     public List<osutils.Process> getListOfProcesses() throws IOException,InterruptedException,RemoteException;
     /**
-     * 
-     * @return IPhysicalMemory memory usage information.
+     * Gets informations of the physical memory current state.
+     * Total, free and used
+     * @return PhysicalMemory memory usage information.
      * @throws java.rmi.RemoteException
      * @throws java.lang.InterruptedException
      */
     public Memory getPhysicalMemory() throws IOException,InterruptedException,RemoteException;
     /**
-     * 
-     * @return ICPU CPU usage information
+     * Gets usage level of the CPU
+     * @return CPU CPU usage information
      * @throws java.rmi.RemoteException
      * @throws java.lang.InterruptedException
      */

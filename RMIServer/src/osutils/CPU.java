@@ -13,16 +13,33 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
+ * CPU usage
+ * 
+ * This class contains the CPU usage information in the moment of a request.
  * @author Damien
  */
 @XmlRootElement(name = "cpu")
 public class CPU implements Serializable {
 
+    /**
+     * Percentage of total used CPU.
+     */
     private String totalUsed;
+    /**
+     * Percentage used by the users
+     */
     private String userLoad;
+    /**
+     * Percentage in use by the system
+     */
     private String systemLoad;
+    /**
+     * Percentage in idle;
+     */
     private String idle;
+    /**
+     * Timestamp in which these values were retrieved
+     */
     private Date date;
     
     public CPU(){
