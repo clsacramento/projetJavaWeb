@@ -7,7 +7,7 @@
 package errors.authentication;
 
 /**
- *
+ * Exception for user trying to authenticate but not valid.
  * @author Damien
  */
 public class UserNotValidException extends Exception{

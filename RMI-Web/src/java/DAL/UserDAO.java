@@ -15,11 +15,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- *
+ * Data Access Object for the User
  * @author Damien
  */
 public class UserDAO {
-    public static HashMap selectServer(String login, String password) throws SQLException, DataBaseConnectionInformationFileNotFoundException, DataBaseDriverMissingException, DataBaseInformationFileParsingException, DataBaseConnectionException{
+    /**
+     * Selects a user having the given login and password
+     * @param login
+     * @param password
+     * @return HashMap mapping its id and login to their values
+     * @throws SQLException
+     * @throws DataBaseConnectionInformationFileNotFoundException
+     * @throws DataBaseDriverMissingException
+     * @throws DataBaseInformationFileParsingException
+     * @throws DataBaseConnectionException 
+     */
+    public static HashMap selectUser(String login, String password) throws SQLException, DataBaseConnectionInformationFileNotFoundException, DataBaseDriverMissingException, DataBaseInformationFileParsingException, DataBaseConnectionException{
         java.sql.PreparedStatement stmt = DataBaseConnection.getStatement("select * from user where login=? and password=?");
         stmt.setString(1, login);
         stmt.setString(2, password);

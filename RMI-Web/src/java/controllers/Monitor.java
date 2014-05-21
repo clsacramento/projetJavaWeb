@@ -17,11 +17,8 @@ import errors.rmi.NoActivityMonitorServerException;
 import errors.rmi.NoRMIServiceException;
 import errors.rmi.ServerRunTimeInternalErrorException;
 import errors.rmi.ServerDidNotRespondException;
-import interfaces.IActivityMonitor;
-import interfaces.IProcess;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,9 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.ClientErrorException;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlSeeAlso;
 import models.RequestCPU;
 import models.RequestMemory;
 import models.RequestProcess;
@@ -52,11 +47,26 @@ public class Monitor extends HttpServlet {
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
+     * 
+     * Connects to REST web service and execute requests according to what
+     * the user chose.
+     * 
+     * When the request is successful, it is registered in the history for later
+     * consultation.
      *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
+     * @throws errors.database.DataBaseConnectionInformationFileNotFoundException
+     * @throws java.sql.SQLException
+     * @throws errors.database.DataBaseDriverMissingException
+     * @throws errors.database.DataBaseInformationFileParsingException
+     * @throws errors.database.DataBaseConnectionException
+     * @throws errors.rmi.NoActivityMonitorServerException
+     * @throws errors.rmi.NoRMIServiceException
+     * @throws errors.rmi.ServerDidNotRespondException
+     * @throws errors.rmi.ServerRunTimeInternalErrorException
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DataBaseConnectionInformationFileNotFoundException, SQLException, DataBaseDriverMissingException, DataBaseInformationFileParsingException, DataBaseConnectionException, NoActivityMonitorServerException, NoRMIServiceException, ServerDidNotRespondException, ServerRunTimeInternalErrorException {
         //response.setContentType("text/html;charset=UTF-8");
@@ -70,8 +80,6 @@ public class Monitor extends HttpServlet {
             request.getRequestDispatcher("/index.jsp").forward(request, response);
         }
         
-        IActivityMonitor iam = null;
-        ArrayList<IProcess> processList = null;
         boolean cpuExist = true;
         boolean memExist = true;
         boolean processExist = true;
@@ -222,11 +230,17 @@ public class Monitor extends HttpServlet {
 
 }
 
-
+/**
+ * A class to wrap a List<osutils.Process> and retrieve the values from REST
+ * web service XML
+ * @author cynthia
+ */
 @XmlRootElement(name="processes")
 class ProcessesList{
     
-    
+    /**
+     * process list
+     */
      List<osutils.Process> list;
 
 //    public ProcessesList(){}

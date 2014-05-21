@@ -17,10 +17,19 @@ import java.util.HashMap;
 import models.Server;
 
 /**
- * Get list of servers in database.
+ * Server manipulation
  * @author cynthia
  */
 public class ServerController {
+    /**
+     * Get list of servers in database.
+     * @return list of Server instances
+     * @throws SQLException
+     * @throws DataBaseConnectionInformationFileNotFoundException
+     * @throws DataBaseDriverMissingException
+     * @throws DataBaseInformationFileParsingException
+     * @throws DataBaseConnectionException 
+     */
     public static ArrayList<Server>  getServers() throws SQLException, DataBaseConnectionInformationFileNotFoundException, DataBaseDriverMissingException, DataBaseInformationFileParsingException, DataBaseConnectionException
     {
         ArrayList<HashMap> serversDAO = ServerDAO.selectServers();

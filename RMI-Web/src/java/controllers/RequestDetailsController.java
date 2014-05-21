@@ -12,7 +12,7 @@ import errors.database.DataBaseDriverMissingException;
 import errors.database.DataBaseInformationFileParsingException;
 import errors.fail.UnexpectedErrorException;
 import errors.validation.InvalidArgumentException;
-import errors.validation.NotFoundObjectException;
+import errors.validation.ObjectNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -60,7 +60,7 @@ public class RequestDetailsController extends HttpServlet {
                         int id = Integer.parseInt(idRequest);
                         Request req = history.get(id);
                         if(req == null){
-                            throw new NotFoundObjectException("history","request_id",idRequest);
+                            throw new ObjectNotFoundException("history","request_id",idRequest);
                         }
                         session.setAttribute("request", req);
                         request.getRequestDispatcher("/WEB-INF/details.jsp").forward(request, response);
@@ -71,7 +71,7 @@ public class RequestDetailsController extends HttpServlet {
                 }
                 
                 
-            } catch(InvalidArgumentException | NotFoundObjectException ex) {
+            } catch(InvalidArgumentException | ObjectNotFoundException ex) {
                 Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
                 request.setAttribute("error", ex);
                 request.getRequestDispatcher("/WEB-INF/error.jsp").forward(request, response);

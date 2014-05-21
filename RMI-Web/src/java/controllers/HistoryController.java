@@ -6,25 +6,16 @@
 
 package controllers;
 
-import errors.validation.NotFoundObjectException;
 import errors.database.DataBaseConnectionException;
 import errors.database.DataBaseConnectionInformationFileNotFoundException;
 import errors.database.DataBaseDriverMissingException;
 import errors.database.DataBaseInformationFileParsingException;
 import errors.fail.UnexpectedErrorException;
-import errors.rmi.NoActivityMonitorServerException;
-import errors.rmi.NoRMIServiceException;
-import errors.rmi.ServerDidNotRespondException;
-import errors.rmi.ServerRunTimeInternalErrorException;
-import errors.validation.InvalidArgumentException;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -34,7 +25,7 @@ import javax.servlet.http.HttpSession;
 import models.Request;
 
 /**
- *
+ * History retrieving
  * @author cynthia
  */
 @WebServlet(name = "HistoryController", urlPatterns = {"/HistoryController"})
@@ -43,6 +34,8 @@ public class HistoryController extends HttpServlet {
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
+     * 
+     * Gets requests from the history
      *
      * @param request servlet request
      * @param response servlet response

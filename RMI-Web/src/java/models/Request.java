@@ -16,22 +16,53 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 
-/**
- *
+/** 
+ * Request (Generic)
+ * 
+ * A class defining a server request
  * @author cynthia
  */
 public abstract class Request {
+    /**
+     * request id
+     */
     protected int id;
+    /**
+     * Server to which the request was made
+     */
     protected Server server;
+    /**
+     * User who made the request
+     */
     protected User user;
+    /**
+     * Type of request (CPU,Memory,Process)
+     */
     protected String typeRequest;
+    /**
+     * Corresponding type request id
+     */
     protected int typeRequestId;
+    /**
+     * timestamp of the request execution (server side)
+     */
     protected Date date;
     
+    /**
+     * HashMap mapping these fields to their values.
+     */
     protected HashMap<String,String> fields;
     
+    /**
+     * Given a request type returns its id.
+     * These ids are the same of the ones in the database but it is done locally
+     * to avoid one database connection jus for it.
+     * It is important to notice though that if these values are static and if
+     * they ever change in the database it is necessary to modify this function.
+     * @param typeRequest
+     * @return 
+     */
     public static int getTypeRequestId(String typeRequest){
         switch(typeRequest){
             case "getListOfProcesses":
@@ -45,6 +76,10 @@ public abstract class Request {
         }
     }
     
+    /**
+     * Creates a request from a database fields/values mapping
+     * @param requestDAO 
+     */
     public Request(HashMap requestDAO){
         fields = new HashMap<>();
         fields.put("Request Id", (String) requestDAO.get("id_request"));
@@ -67,6 +102,12 @@ public abstract class Request {
         this.typeRequestId = Integer.parseInt((String) requestDAO.get("id_type_request"));
     }
     
+    /**
+     * Creates the request from its given parameters
+     * @param server
+     * @param user
+     * @param typeRequest 
+     */
     public Request(Server server, User user, String typeRequest){
         this.server = server;
         this.user = user;
@@ -75,10 +116,23 @@ public abstract class Request {
         this.fields = null;
     }
     
+    /**
+     * Mapping of fields and values
+     * @return HashMap
+     */
     public HashMap<String,String> getFields(){
         return this.fields;
     }
     
+    /**
+     * Mapping of detailed fields/values matches.
+     * @return HashMap
+     * @throws SQLException
+     * @throws DataBaseConnectionInformationFileNotFoundException
+     * @throws DataBaseDriverMissingException
+     * @throws DataBaseInformationFileParsingException
+     * @throws DataBaseConnectionException 
+     */
     public abstract HashMap<String,String> getDetails()throws SQLException, DataBaseConnectionInformationFileNotFoundException, DataBaseDriverMissingException, DataBaseInformationFileParsingException, DataBaseConnectionException;
     
     public int getId(){
@@ -106,7 +160,14 @@ public abstract class Request {
     }
     
     
-    
+    /**
+     * Registers this request to the database
+     * @throws SQLException
+     * @throws DataBaseDriverMissingException
+     * @throws DataBaseConnectionInformationFileNotFoundException
+     * @throws DataBaseInformationFileParsingException
+     * @throws DataBaseConnectionException 
+     */
     public void saveRequest() throws SQLException, DataBaseDriverMissingException, DataBaseConnectionInformationFileNotFoundException, DataBaseInformationFileParsingException, DataBaseConnectionException{
         java.sql.Date d = new java.sql.Date(this.date.getTime());
         java.sql.Time t = new java.sql.Time(this.date.getTime());
@@ -117,7 +178,11 @@ public abstract class Request {
             
         }
     }
-    
+    /**
+     * Creates an specific request from DAO (HashMap) depending on its type
+     * @param requestDAO
+     * @return an specific Request (CPU,Processes or Memory)
+     */
     private static Request createRequest(HashMap requestDAO){
         String typeRequest = (String) requestDAO.get("type_request");
         switch(typeRequest){
@@ -131,7 +196,15 @@ public abstract class Request {
                 return null;
         }
     }
-    
+    /**
+     * Retrieve list of requests
+     * @return Mapping of request ids to corresponding Request instance
+     * @throws SQLException
+     * @throws DataBaseConnectionInformationFileNotFoundException
+     * @throws DataBaseDriverMissingException
+     * @throws DataBaseInformationFileParsingException
+     * @throws DataBaseConnectionException 
+     */
     public static HashMap<Integer, Request> getRequests() throws SQLException, DataBaseConnectionInformationFileNotFoundException, DataBaseDriverMissingException, DataBaseInformationFileParsingException, DataBaseConnectionException{
         HashMap<Integer,Request> reqs = new HashMap<>();
         
@@ -144,6 +217,13 @@ public abstract class Request {
         
         return reqs;
     }
-    
+    /**
+     * Registers request specific info to the database
+     * @throws SQLException
+     * @throws DataBaseDriverMissingException
+     * @throws DataBaseConnectionInformationFileNotFoundException
+     * @throws DataBaseInformationFileParsingException
+     * @throws DataBaseConnectionException 
+     */
     public abstract void saveRequestDetails() throws SQLException, DataBaseDriverMissingException, DataBaseConnectionInformationFileNotFoundException, DataBaseInformationFileParsingException, DataBaseConnectionException;
 }

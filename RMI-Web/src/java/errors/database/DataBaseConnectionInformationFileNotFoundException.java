@@ -12,7 +12,10 @@ package errors.database;
  * @author cynthia
  */
 public class DataBaseConnectionInformationFileNotFoundException extends Exception{
-
+    /**
+     * Message explaining and including the file name.
+     * @param jsonFile 
+     */
     public DataBaseConnectionInformationFileNotFoundException(String jsonFile) {
         super("DataBase connection information file << "+jsonFile+" >> not found.");
     }

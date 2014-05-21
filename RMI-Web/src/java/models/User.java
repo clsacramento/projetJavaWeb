@@ -34,7 +34,7 @@ public class User {
     }
 
     public boolean validateUser () throws SQLException, DataBaseConnectionInformationFileNotFoundException, DataBaseDriverMissingException, DataBaseInformationFileParsingException, DataBaseConnectionException{
-        HashMap user = UserDAO.selectServer(login, password);
+        HashMap user = UserDAO.selectUser(login, password);
         if(user!=null)
         {
             this.id = Integer.parseInt((String) user.get("id_user"));

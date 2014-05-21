@@ -11,7 +11,11 @@ package errors.database;
  * @author cynthia
  */
 public class DataBaseConnectionException extends Exception{
-
+    /**
+     * Creates the exception with the explaining message plus the error message
+     * gotten to provide additional information.
+     * @param extraInformation 
+     */
     public DataBaseConnectionException(String extraInformation) {
         super("Error during connection to database. Extra Information:\n"+extraInformation);
     }

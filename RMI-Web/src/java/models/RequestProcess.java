@@ -11,25 +11,35 @@ import errors.database.DataBaseConnectionException;
 import errors.database.DataBaseConnectionInformationFileNotFoundException;
 import errors.database.DataBaseDriverMissingException;
 import errors.database.DataBaseInformationFileParsingException;
-import interfaces.IProcess;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 /**
- *
+ * Specific Process Request
  * @author cynthia
  */
 public class RequestProcess extends Request{
     private List<osutils.Process> processList;
     private HashMap <Integer,osutils.Process> processesRequestsIds;
     
+    /**
+     * Constructs Request from DAO object
+     * @param requestDAO 
+     */
     public RequestProcess(HashMap requestDAO){
         super(requestDAO);
         this.processList = null;
     }
     
+    /**
+     * Constructs request from parameters
+     * @param server
+     * @param user
+     * @param typeRequest
+     * @param processList 
+     */
     public RequestProcess(Server server, User user, String typeRequest, List<osutils.Process> processList) {
         super(server, user, typeRequest);
         this.processList = processList;
@@ -38,7 +48,15 @@ public class RequestProcess extends Request{
         }
         this.processesRequestsIds = new HashMap<>();
     }
-    
+    /**
+     * Retrieves list of processes of the request in the history
+     * @return list of Process instances
+     * @throws SQLException
+     * @throws DataBaseConnectionInformationFileNotFoundException
+     * @throws DataBaseDriverMissingException
+     * @throws DataBaseInformationFileParsingException
+     * @throws DataBaseConnectionException 
+     */
     public List<osutils.Process> getProcessList() throws SQLException, DataBaseConnectionInformationFileNotFoundException, DataBaseDriverMissingException, DataBaseInformationFileParsingException, DataBaseConnectionException{
         if(this.processList == null){
             this.processList = new ArrayList<>();
@@ -58,6 +76,14 @@ public class RequestProcess extends Request{
         return this.processList;
     }
 
+    /**
+     * Registers to database the process list specific details
+     * @throws SQLException
+     * @throws DataBaseDriverMissingException
+     * @throws DataBaseConnectionInformationFileNotFoundException
+     * @throws DataBaseInformationFileParsingException
+     * @throws DataBaseConnectionException 
+     */
     @Override
     public void saveRequestDetails() throws SQLException, DataBaseDriverMissingException, DataBaseConnectionInformationFileNotFoundException, DataBaseInformationFileParsingException, DataBaseConnectionException {
         this.saveRequest();
@@ -77,6 +103,15 @@ public class RequestProcess extends Request{
         }
     }
 
+    /**
+     * Creates the field/value mapping for the process list
+     * @return HashMap
+     * @throws SQLException
+     * @throws DataBaseConnectionInformationFileNotFoundException
+     * @throws DataBaseDriverMissingException
+     * @throws DataBaseInformationFileParsingException
+     * @throws DataBaseConnectionException 
+     */
     @Override
         public HashMap<String, String> getDetails()throws SQLException, DataBaseConnectionInformationFileNotFoundException, DataBaseDriverMissingException, DataBaseInformationFileParsingException, DataBaseConnectionException {
         HashMap<String,String> details = new HashMap<>();

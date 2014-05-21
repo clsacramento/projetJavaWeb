@@ -7,25 +7,15 @@
 package models;
 
 import DAL.ServerDAO;
-import controllers.RestClientController;
 import errors.database.DataBaseConnectionException;
 import errors.database.DataBaseConnectionInformationFileNotFoundException;
 import errors.database.DataBaseDriverMissingException;
 import errors.database.DataBaseInformationFileParsingException;
-import errors.rmi.NoActivityMonitorServerException;
-import errors.rmi.NoRMIServiceException;
-import interfaces.IActivityMonitor;
-import java.net.MalformedURLException;
-import java.rmi.Naming;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
- *
+ * Server
  * @author cynthia
  */
 public class Server {
@@ -33,12 +23,27 @@ public class Server {
     private String host;
     
     
-
+    /**
+     * Constructs the server from parameters
+     * @param id
+     * @param host 
+     */
     public Server(int id, String host) {
         this.id = id;
         this.host = host;
     }
         
+    /**
+     * Constructs a server host name/ip 
+     * The id is retrieved from the database and set to 0 if host does not
+     * exist
+     * @param host
+     * @throws DataBaseConnectionInformationFileNotFoundException
+     * @throws SQLException
+     * @throws DataBaseDriverMissingException
+     * @throws DataBaseInformationFileParsingException
+     * @throws DataBaseConnectionException 
+     */
     public Server(String host) throws DataBaseConnectionInformationFileNotFoundException, SQLException, DataBaseDriverMissingException, DataBaseInformationFileParsingException, DataBaseConnectionException {
         this.host = host;
         this.id = 0;
@@ -51,12 +56,16 @@ public class Server {
 //            this.id = Integer.parseInt((String)ServerDAO.insertHost(host).get("id_server"));
 //        }
     }
-    
+    /**
+     * Constructs Server from field/value DAO mapping
+     * @param serverDAO 
+     */
     public Server(HashMap serverDAO){
         this.id = Integer.parseInt((String)serverDAO.get("id_server"));
         this.host = (String)serverDAO.get("host");
     }
 
+    
     public int getId() {
         return id;
     }
