@@ -7,12 +7,11 @@
 package interfaces;
 
 import java.io.Serializable;
-import java.rmi.Remote;
-import java.rmi.RemoteException;
 import java.util.Date;
 
 /**
- *
+ * @deprecated 
+ * I didn't delete but no more used in the project
  * @author cynthia
  */
 public interface IPhysicalMemory extends Serializable{

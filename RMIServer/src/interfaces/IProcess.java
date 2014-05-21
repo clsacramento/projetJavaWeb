@@ -13,7 +13,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
+ * @deprecated 
+ * I didn't delete but no more used in the project
  * @author cynthia
  */
 @XmlRootElement(name = "process")
