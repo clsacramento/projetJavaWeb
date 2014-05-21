@@ -7,11 +7,7 @@
 package rest;
 
 import errors.rest.ExceptionXml;
-import errors.rmi.NoActivityMonitorServerException;
-import errors.rmi.NoRMIServiceException;
 import interfaces.IActivityMonitor;
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -31,8 +27,10 @@ import osutils.Memory;
 import wrapper.Server;
 
 /**
- * REST Web Service
- *
+ * RESTful Web Service
+ * This RESTful API exposes the ActivityMonitor from the RMIServer projects.
+ * Its functions becomes accessible through the corresponding URI in the web service.
+ * 
  * @author cynthia
  */
 @Path("rmiapi")
@@ -46,22 +44,12 @@ public class RmiApiResource {
      */
     public RmiApiResource() {
     }
-
-    /**
-     * Retrieves representation of an instance of rest.RmiApiResource
-     * @return an instance of java.lang.String
-     */
-    @GET
-    @Produces("application/xml")
-    public String getXml() {
-        //TODO return proper representation object
-        return "<xml>dumb</xml>";
-//        throw new UnsupportedOperationException();
-    }
     
     /**
-     * Retrieves representation of an instance of rest.RmiApiResource
-     * @return an instance of java.lang.String
+     * Retrieves the error which happened in the last resource call.
+     * The exception is gathered from the HttpSession and transfered in XML.
+     * This XML object contains the type and the message of the error.
+     * @return an instance of ExceptionXml converted to XML
      */
     @GET
     @Produces("application/xml")
@@ -79,10 +67,14 @@ public class RmiApiResource {
     }
     
     /**
-     * Retrieves representation of an instance of activitymonitor.ProcesRessources
-     * @param host
-     * @param request
-     * @return an instance of java.lang.String
+     * Retrieves the list of processes running in the host.
+     * 
+     * Connection to RMI server host and remote invocation of its getListOfProcesses
+     * method.
+     * @param host name or ip address of the RMI Server, localhost if empty
+     * @return a list of Process instances converted to XML. The list is empty
+     * if the request is not successful and session variable exception is set
+     * in case any is caught.
      */
     @GET
     @Produces("text/xml")
@@ -98,22 +90,25 @@ public class RmiApiResource {
             System.out.println("host: "+host);
             
             Server rmi = new Server(host);
-            IActivityMonitor iam = rmi.getMonitor();
-            List<osutils.Process> list = (List<osutils.Process>) iam.getListOfProcesses();
+            List<osutils.Process> list = rmi.getListOfProcess();
+            request.getSession().setAttribute("exception", null);
             return list;
         } catch (Exception ex) {
             Logger.getLogger(RmiApiResource.class.getName()).log(Level.SEVERE, null, ex);
             HttpSession session = request.getSession();
             session.setAttribute("exception", new ExceptionXml(ex));
+            request.getSession().setAttribute("exception", null);
             return new ArrayList<>();
         } 
     }
     
     /**
-     * Retrieves representation of an instance of activitymonitor.ProcesRessources
-     * @param host
-     * @param request
-     * @return an instance of java.lang.String
+     * Retrieves CPU usage on the host
+     * Connects to the RMI host and execute its getCPU method.
+     * @param host name or ip address of the RMI Server, localhost if empty
+     * @return an instance of CPU converted to XML. The object members are empty
+     * if the request is not successful and session variable exception is set
+     * in case any is caught.
      */
     @GET
     @Produces("text/xml")
@@ -127,8 +122,8 @@ public class RmiApiResource {
             System.out.println("host: "+host);
             
             Server rmi = new Server(host);
-            IActivityMonitor iam = rmi.getMonitor();
-            CPU cpu = (CPU) iam.getCPU();
+            CPU cpu = (CPU) rmi.getCPU();
+            request.getSession().setAttribute("exception", null);
             return cpu;
         } catch (Exception ex) {
             Logger.getLogger(RmiApiResource.class.getName()).log(Level.SEVERE, null, ex);
@@ -141,10 +136,12 @@ public class RmiApiResource {
     }
     
     /**
-     * Retrieves representation of an instance of activitymonitor.ProcesRessources
-     * @param host
-     * @param request
-     * @return an instance of java.lang.String
+     * Retrieves Physical Memory usage on the host
+     * Connects to the RMI host and execute its getPhysicalMemory method.
+     * @param host name or ip address of the RMI Server, localhost if empty
+     * @return an instance of Memory converted to XML. The object members are empty
+     * if the request is not successful and session variable exception is set
+     * in case any is caught.
      */
     @GET
     @Produces("text/xml")
@@ -158,8 +155,7 @@ public class RmiApiResource {
             System.out.println("host mem: "+host);
             
             Server rmi = new Server(host);
-            IActivityMonitor iam = rmi.getMonitor();
-            Memory mem =  iam.getPhysicalMemory();
+            Memory mem =  rmi.getPhysicalMemory();
             return mem;
         } catch (Exception ex) {
             Logger.getLogger(RmiApiResource.class.getName()).log(Level.SEVERE, null, ex);
@@ -173,13 +169,4 @@ public class RmiApiResource {
     
     
 
-    /**
-     * PUT method for updating or creating an instance of RmiApiResource
-     * @param content representation for the resource
-     * @return an HTTP response with content of the updated or created resource.
-     */
-    @PUT
-    @Consumes("application/xml")
-    public void putXml(String content) {
-    }
 }

@@ -10,7 +10,10 @@ import java.util.Set;
 import javax.ws.rs.core.Application;
 
 /**
- *
+ * RESTful web service from patterns
+ * Generated RESTful root resource class with GET and PUT methods using Java API for RESTful Web Service (JSR-311). 
+ * This pattern is useful for creating a simple HelloWorld service and wrapper services for invoking WSDL-based web services. 
+ * On the next page you will be specifying class name, URI, and representation type of the resource.
  * @author cynthia
  */
 @javax.ws.rs.ApplicationPath("rest")
