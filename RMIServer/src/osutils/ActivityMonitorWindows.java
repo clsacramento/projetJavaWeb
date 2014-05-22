@@ -22,7 +22,7 @@ import java.util.logging.Logger;
  * une console powershell en administrateur et exécuter Set-ExectionPolicy
  * Unrestricted
  *
- * @author cynthia
+ * @author Damien
  */
 public class ActivityMonitorWindows extends UnicastRemoteObject implements IActivityMonitor {
     /**
