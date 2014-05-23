@@ -32,6 +32,11 @@ public class User {
         this.login = login;
         this.password = password;
     }
+    
+    public User(HashMap userDAO){
+        this.id = Integer.parseInt((String)userDAO.get("id_user"));
+        this.login = (String)userDAO.get("login");
+    }
 
     public boolean validateUser () throws SQLException, DataBaseConnectionInformationFileNotFoundException, DataBaseDriverMissingException, DataBaseInformationFileParsingException, DataBaseConnectionException{
         HashMap user = UserDAO.selectUser(login, password);

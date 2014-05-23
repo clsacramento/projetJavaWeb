@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package controllers;
 
 import errors.database.DataBaseConnectionException;
@@ -30,6 +29,7 @@ import javax.servlet.http.HttpSession;
 import javax.ws.rs.ClientErrorException;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import misc.AuthTest;
 import models.RequestCPU;
 import models.RequestMemory;
 import models.RequestProcess;
@@ -47,10 +47,10 @@ public class Monitor extends HttpServlet {
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
-     * 
-     * Connects to REST web service and execute requests according to what
-     * the user chose.
-     * 
+     *
+     * Connects to REST web service and execute requests according to what the
+     * user chose.
+     *
      * When the request is successful, it is registered in the history for later
      * consultation.
      *
@@ -58,7 +58,8 @@ public class Monitor extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
-     * @throws errors.database.DataBaseConnectionInformationFileNotFoundException
+     * @throws
+     * errors.database.DataBaseConnectionInformationFileNotFoundException
      * @throws java.sql.SQLException
      * @throws errors.database.DataBaseDriverMissingException
      * @throws errors.database.DataBaseInformationFileParsingException
@@ -70,107 +71,108 @@ public class Monitor extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DataBaseConnectionInformationFileNotFoundException, SQLException, DataBaseDriverMissingException, DataBaseInformationFileParsingException, DataBaseConnectionException, NoActivityMonitorServerException, NoRMIServiceException, ServerDidNotRespondException, ServerRunTimeInternalErrorException {
         //response.setContentType("text/html;charset=UTF-8");
-        
-        try{
-        
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
-        
-        if(user == null || user.getId()==0){
-            request.getRequestDispatcher("/index.jsp").forward(request, response);
-        }
-        
-        boolean cpuExist = true;
-        boolean memExist = true;
-        boolean processExist = true;
-        String[] checkbox = request.getParameterValues("cpu");
-        if (checkbox == null) {
-            cpuExist = false;
-        }
-        checkbox = request.getParameterValues("mem");
-        if (checkbox == null) {
-            memExist = false;
-        }
-        checkbox = request.getParameterValues("process");
-        if (checkbox == null) {
-            processExist = false;
-        }
-        
-        
-        String host = request.getParameter("url");
-        Server server = new Server(host);
 
-        RestClientController restClient = new RestClientController();
-        
-           
-        if (cpuExist) {
-            request.setAttribute("cpuExist", true);
-            
-                CPU cp = restClient.getCPU(CPU.class, "", host);
-                
-                if("".equals(cp.getTotalUsed())){
-                    ExceptionXml eXml = restClient.getLastException(ExceptionXml.class);
-                    throw new RemoteErrorException(eXml);
+        HttpSession session = request.getSession(true);
+        AuthTest testauth = new AuthTest();
+        boolean authExist = testauth.auth(session);
+
+        if (authExist) {
+
+            try {
+
+                User user = (User) session.getAttribute("user");
+
+                if (user == null || user.getId() == 0) {
+                    request.getRequestDispatcher("/index.jsp").forward(request, response);
                 }
-                
-                request.setAttribute("icpu", cp);
-                
-                RequestCPU rCPU = new RequestCPU(server, user, "getCPU", cp);
-                rCPU.saveRequestDetails();
-                
-            
-           
-        } 
-        
-        if (memExist) {
-            request.setAttribute("memExist", true);
-                Memory im = restClient.getPhysicalMemory(Memory.class, "", host);
-                
-                if("".equals(im.getTotal())){
-                    ExceptionXml eXml = restClient.getLastException(ExceptionXml.class);
-                    throw new RemoteErrorException(eXml);
+
+                boolean cpuExist = true;
+                boolean memExist = true;
+                boolean processExist = true;
+                String[] checkbox = request.getParameterValues("cpu");
+                if (checkbox == null) {
+                    cpuExist = false;
                 }
-                
-                request.setAttribute("imem", im);
-                
-                RequestMemory rMem = new RequestMemory(server, user, "getPhysicalMemory", im);
-                rMem.saveRequestDetails();
-            
-           
-        }
-        if (processExist) {
-            request.setAttribute("processExist", true);
-            ProcessesList plist = restClient.getProcessList(ProcessesList.class, "", host);
-                List<osutils.Process> pr = plist.getList();
-                
-                if(pr==null||pr.isEmpty()){
-                    ExceptionXml eXml = restClient.getLastException(ExceptionXml.class);
-                    throw new RemoteErrorException(eXml);
+                checkbox = request.getParameterValues("mem");
+                if (checkbox == null) {
+                    memExist = false;
                 }
-                
-                request.setAttribute("iprocess", pr);
-                
-                RequestProcess rPro = new RequestProcess(server, user, "getListOfProcesses", pr);
-                rPro.saveRequestDetails();
-            
-           
-        }
-        
-        if(server.getId()==0){
-            ServerController.insertServer(host);
-        }
-        
-        request.getRequestDispatcher("/WEB-INF/monitor.jsp").forward(request, response);
-        
-        }  catch(DataBaseConnectionException | DataBaseConnectionInformationFileNotFoundException | DataBaseDriverMissingException | DataBaseInformationFileParsingException | RemoteErrorException ex){
-             Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
-            request.setAttribute("error", ex);
-            request.getRequestDispatcher("/WEB-INF/error.jsp").forward(request, response);
-        }
-        catch ( IOException | SQLException | ServletException | ClientErrorException ex){
-            Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
-            request.setAttribute("error", new UnexpectedErrorException(ex));
-            request.getRequestDispatcher("/WEB-INF/error.jsp").forward(request, response);
+                checkbox = request.getParameterValues("process");
+                if (checkbox == null) {
+                    processExist = false;
+                }
+
+                String host = request.getParameter("url");
+                Server server = new Server(host);
+
+                RestClientController restClient = new RestClientController();
+
+                if (cpuExist) {
+                    request.setAttribute("cpuExist", true);
+
+                    CPU cp = restClient.getCPU(CPU.class, "", host);
+
+                    if ("".equals(cp.getTotalUsed())) {
+                        ExceptionXml eXml = restClient.getLastException(ExceptionXml.class);
+                        throw new RemoteErrorException(eXml);
+                    }
+
+                    request.setAttribute("icpu", cp);
+
+                    RequestCPU rCPU = new RequestCPU(server, user, "getCPU", cp);
+                    rCPU.saveRequestDetails();
+
+                }
+
+                if (memExist) {
+                    request.setAttribute("memExist", true);
+                    Memory im = restClient.getPhysicalMemory(Memory.class, "", host);
+
+                    if ("".equals(im.getTotal())) {
+                        ExceptionXml eXml = restClient.getLastException(ExceptionXml.class);
+                        throw new RemoteErrorException(eXml);
+                    }
+
+                    request.setAttribute("imem", im);
+
+                    RequestMemory rMem = new RequestMemory(server, user, "getPhysicalMemory", im);
+                    rMem.saveRequestDetails();
+
+                }
+                if (processExist) {
+                    request.setAttribute("processExist", true);
+                    ProcessesList plist = restClient.getProcessList(ProcessesList.class, "", host);
+                    List<osutils.Process> pr = plist.getList();
+
+                    if (pr == null || pr.isEmpty()) {
+                        ExceptionXml eXml = restClient.getLastException(ExceptionXml.class);
+                        throw new RemoteErrorException(eXml);
+                    }
+
+                    request.setAttribute("iprocess", pr);
+
+                    RequestProcess rPro = new RequestProcess(server, user, "getListOfProcesses", pr);
+                    rPro.saveRequestDetails();
+
+                }
+
+                if (server.getId() == 0) {
+                    ServerController.insertServer(host);
+                }
+
+                request.getRequestDispatcher("/WEB-INF/monitor.jsp").forward(request, response);
+
+            } catch (DataBaseConnectionException | DataBaseConnectionInformationFileNotFoundException | DataBaseDriverMissingException | DataBaseInformationFileParsingException | RemoteErrorException ex) {
+                Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
+                request.setAttribute("error", ex);
+                request.getRequestDispatcher("/WEB-INF/error.jsp").forward(request, response);
+            } catch (IOException | SQLException | ServletException | ClientErrorException ex) {
+                Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
+                request.setAttribute("error", new UnexpectedErrorException(ex));
+                request.getRequestDispatcher("/WEB-INF/error.jsp").forward(request, response);
+            }
+        } else {
+            request.getRequestDispatcher("/WEB-INF/errorAuth.jsp").forward(request, response);
         }
     }
 
@@ -192,11 +194,8 @@ public class Monitor extends HttpServlet {
             Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
             request.setAttribute("error", ex);
             request.getRequestDispatcher("/WEB-INF/error.jsp").forward(request, response);
-        } 
+        }
     }
-    
-    
-    
 
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -231,17 +230,18 @@ public class Monitor extends HttpServlet {
 }
 
 /**
- * A class to wrap a List<osutils.Process> and retrieve the values from REST
- * web service XML
+ * A class to wrap a List<osutils.Process> and retrieve the values from REST web
+ * service XML
+ *
  * @author cynthia
  */
-@XmlRootElement(name="processes")
-class ProcessesList{
-    
+@XmlRootElement(name = "processes")
+class ProcessesList {
+
     /**
      * process list
      */
-     List<osutils.Process> list;
+    List<osutils.Process> list;
 
 //    public ProcessesList(){}
 //    
@@ -249,13 +249,12 @@ class ProcessesList{
 //    public ProcessesList(List<osutils.Process> list){
 //    	this.list=list;
 //    }
-
-    @XmlElement(name = "process") 
-    public List<osutils.Process> getList(){
-    	return list;
+    @XmlElement(name = "process")
+    public List<osutils.Process> getList() {
+        return list;
     }
-    
-    public void setList(List<osutils.Process> list){
+
+    public void setList(List<osutils.Process> list) {
         this.list = list;
     }
 }

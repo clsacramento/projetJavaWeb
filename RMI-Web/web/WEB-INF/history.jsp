@@ -1,7 +1,7 @@
 <%-- 
     Document   : history
     Created on : May 18, 2014, 3:59:57 PM
-    Author     : cynthia
+    Author     : cynthia,Damien
 --%>
 
 <%@page import="java.util.Map.Entry"%>
@@ -29,7 +29,7 @@
     </div>
         <h2>Request History</h2>
         <%if(history != null || history.size()>0){%>
-        <table>
+        <table BORDER="1" width="50%">
             <thead>
                 <th>Date</th>
                 <th>Server</th>

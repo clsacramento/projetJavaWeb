@@ -43,4 +43,8 @@ public class ServerController {
     public static Server insertServer(String host) throws SQLException, DataBaseConnectionInformationFileNotFoundException, DataBaseDriverMissingException, DataBaseInformationFileParsingException, DataBaseConnectionException{
         return new Server(ServerDAO.insertHost(host));
     }
+    
+    public static void deleteServer(String id) throws SQLException, DataBaseConnectionInformationFileNotFoundException, DataBaseDriverMissingException, DataBaseInformationFileParsingException, DataBaseConnectionException{
+        ServerDAO.delHost(id);
+    }
 }

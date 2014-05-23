@@ -5,16 +5,64 @@
         <servlet-class>controllers.Monitor</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>AuthController</servlet-name>
+        <servlet-class>controllers.AuthController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Logout</servlet-name>
+        <servlet-class>controllers.Logout</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>UserController</servlet-name>
         <servlet-class>controllers.UserController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Users</servlet-name>
+        <servlet-class>controllers.Users</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DelServer</servlet-name>
+        <servlet-class>controllers.DelServer</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DelUser</servlet-name>
+        <servlet-class>controllers.DelUser</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddUser</servlet-name>
+        <servlet-class>controllers.AddUser</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Monitor</servlet-name>
         <url-pattern>/Monitor</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>AuthController</servlet-name>
+        <url-pattern>/AuthController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Logout</servlet-name>
+        <url-pattern>/Logout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>UserController</servlet-name>
         <url-pattern>/UserController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Users</servlet-name>
+        <url-pattern>/Users</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DelServer</servlet-name>
+        <url-pattern>/DelServer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DelUser</servlet-name>
+        <url-pattern>/DelUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddUser</servlet-name>
+        <url-pattern>/AddUser</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

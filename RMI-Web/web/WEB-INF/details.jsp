@@ -1,7 +1,7 @@
 <%-- 
     Document   : details
     Created on : May 18, 2014, 5:53:00 PM
-    Author     : cynthia
+    Author     : cynthia,Damien
 --%>
 
 <%@page import="java.util.Map.Entry"%>
@@ -27,7 +27,7 @@
         </div>
         <h1>Request Details</h1>
         <h2>Common Fields :</h2>
-        <table>
+        <table BORDER="1" width="50%">
             <thead>
                 <%for(String key : detailedRequest.getFields().keySet()){%>
                     <th>
@@ -44,7 +44,7 @@
             </tbody>
         </table>
         <h2>Specific request details:</h2>
-        <table>
+        <table BORDER="1" width="50%">
             <%for(Entry<String,String> pair : detailedRequest.getDetails().entrySet()){%>
             <% 
                 String key = pair.getKey();

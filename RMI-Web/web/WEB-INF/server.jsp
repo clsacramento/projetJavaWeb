@@ -1,7 +1,7 @@
 <%-- 
     Document   : index
     Created on : Apr 18, 2014, 8:50:31 PM
-    Author     : cynthia
+    Author     : cynthia,damien
 --%>
 
 <%@page import="controllers.ServerController"%>
@@ -19,12 +19,12 @@
 <div id="header">
     <jsp:include page="menu.jsp"/>
 </div>
-<CENTER><BIG>Informations serveur</BIG></CENTER>
+<CENTER><BIG>Server information</BIG></CENTER>
 <form name="form" method="get" action="Monitor">
     <%
         ArrayList<Server> servers = ServerController.getServers();
     %>
-    <CENTER>URL du serveur : <input type="text" name="url" list="servers">
+    <CENTER>Server address : <input type="text" name="url" list="servers">
         <DATALIST id="servers">
             <%
                 for(Server server : servers){
@@ -35,9 +35,9 @@
             <%}%>
         </DATALIST>
     </CENTER>
-    <CENTER>Charge CPU : <INPUT type="checkbox" name="cpu" value="cpu"></CENTER>
-    <CENTER>Informations mémoire : <INPUT type="checkbox" name="mem" value="mem"></CENTER>
-    <CENTER>Liste processus : <INPUT type="checkbox" name="process" value="process"></CENTER>
+    <CENTER>CPU usage : <INPUT type="checkbox" name="cpu" value="cpu"></CENTER>
+    <CENTER>Memory information : <INPUT type="checkbox" name="mem" value="mem"></CENTER>
+    <CENTER>Process list : <INPUT type="checkbox" name="process" value="process"></CENTER>
     <CENTER><INPUT type="submit" name="Submit" value="Ok"></CENTER>
 </form>
 </BODY>

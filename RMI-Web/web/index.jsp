@@ -20,11 +20,11 @@
     <meta charset="UTF-8">
 </HEAD>
 <BODY>
-    <H1>Activity Monitor</H1>
-<CENTER><BIG>Authentification</BIG></CENTER>
-<form name="form" method="post" action="UserController">
-    <CENTER>Identifiant : <input type="text" name="login"></CENTER>
-    <CENTER>Mot de passe : <input type="password" name="password"></CENTER>
+<center><H1>Activity Monitor</H1></center>
+<CENTER><BIG>Authentication</BIG></CENTER>
+<form name="form" method="post" action="AuthController">
+    <CENTER>Login : <input type="text" name="login"></CENTER>
+    <CENTER>Password : <input type="password" name="password"></CENTER>
     <CENTER><INPUT type="submit" name="Submit" value="Ok"></CENTER>
 </form>
 </BODY>

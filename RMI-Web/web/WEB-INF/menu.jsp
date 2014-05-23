@@ -1,7 +1,7 @@
 <%-- 
     Document   : menu
     Created on : May 18, 2014, 4:49:08 PM
-    Author     : cynthia
+    Author     : cynthia,damien
 --%>
 
 <%@page import="models.User"%>
@@ -24,7 +24,9 @@
         <td>Logged in as: <%=login%></td>
         <td><a href="Server">Monitor Server</a></td>
         <td><a href="HistoryController">History</a></td>
-        <td><a href="#">Logout</a></td>
+        <td><a href="Users">Users</a></td>
+        <td><a href="Servers">Servers</a></td>
+        <td><a href="Logout">Logout</a></td>
     </tr>
 </table>
-<H1>Activity Monitor</H1>
+        <center><H1>Activity Monitor</H1></center>

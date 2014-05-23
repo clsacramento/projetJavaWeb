@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package controllers;
 
 import errors.database.DataBaseConnectionException;
@@ -25,11 +24,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import misc.AuthTest;
 import models.Request;
 
 /**
  *
- * @author cynthia
+ * @author cynthia,Damien
  */
 @WebServlet(name = "RequestDetailsController", urlPatterns = {"/RequestDetailsController"})
 public class RequestDetailsController extends HttpServlet {
@@ -46,40 +46,47 @@ public class RequestDetailsController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try{
-                HttpSession session = request.getSession();
+
+        HttpSession session = request.getSession(true);
+        AuthTest testauth = new AuthTest();
+        boolean authExist = testauth.auth(session);
+
+        if (authExist) {
+
+            try {
                 String idRequest = request.getParameter("id_request");
-                HashMap<Integer,Request> history = (HashMap<Integer,Request>) session.getAttribute("history");
-                if(idRequest==null||history==null){
-                    
+                HashMap<Integer, Request> history = (HashMap<Integer, Request>) session.getAttribute("history");
+                if (idRequest == null || history == null) {
+
                     request.getRequestDispatcher("/WEB-INF/history.jsp").forward(request, response);
-                }
-                else{
-                    try{
-                        
+                } else {
+                    try {
+
                         int id = Integer.parseInt(idRequest);
                         Request req = history.get(id);
-                        if(req == null){
-                            throw new ObjectNotFoundException("history","request_id",idRequest);
+                        if (req == null) {
+                            throw new ObjectNotFoundException("history", "request_id", idRequest);
                         }
                         session.setAttribute("request", req);
                         request.getRequestDispatcher("/WEB-INF/details.jsp").forward(request, response);
 //                        response.sendRedirect("WEB-INF/details.jsp");
-                    } catch (NumberFormatException ex){
+                    } catch (NumberFormatException ex) {
                         throw new InvalidArgumentException("id_request", idRequest);
                     }
                 }
-                
-                
-            } catch(InvalidArgumentException | ObjectNotFoundException ex) {
+
+            } catch (InvalidArgumentException | ObjectNotFoundException ex) {
                 Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
                 request.setAttribute("error", ex);
                 request.getRequestDispatcher("/WEB-INF/error.jsp").forward(request, response);
-            } catch (Exception ex){
+            } catch (Exception ex) {
                 Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
                 request.setAttribute("error", new UnexpectedErrorException(ex));
                 request.getRequestDispatcher("/WEB-INF/error.jsp").forward(request, response);
             }
+        } else {
+            request.getRequestDispatcher("/WEB-INF/errorAuth.jsp").forward(request, response);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

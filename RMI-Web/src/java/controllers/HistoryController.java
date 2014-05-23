@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package controllers;
 
 import errors.database.DataBaseConnectionException;
@@ -13,6 +12,7 @@ import errors.database.DataBaseInformationFileParsingException;
 import errors.fail.UnexpectedErrorException;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,11 +22,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import misc.AuthTest;
 import models.Request;
 
 /**
  * History retrieving
- * @author cynthia
+ *
+ * @author cynthia,damien
  */
 @WebServlet(name = "HistoryController", urlPatterns = {"/HistoryController"})
 public class HistoryController extends HttpServlet {
@@ -34,7 +36,7 @@ public class HistoryController extends HttpServlet {
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
-     * 
+     *
      * Gets requests from the history
      *
      * @param request servlet request
@@ -44,26 +46,34 @@ public class HistoryController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            /* TODO output your page here. You may use following sample code. */
-            try{
-                HttpSession session = request.getSession();
-                HashMap<Integer,Request> history = Request.getRequests();
+        /* TODO output your page here. You may use following sample code. */
+
+        HttpSession session = request.getSession(true);
+        AuthTest testauth = new AuthTest();
+        boolean authExist = testauth.auth(session);
+
+        if (authExist) {
+            try {
+                
+                HashMap<Integer, Request> history = Request.getRequests();
                 session.setAttribute("history", history);
-                  
-                if(history != null)
-                request.getRequestDispatcher("/WEB-INF/history.jsp").forward(request, response);
-                
-                
-                
-            } catch(DataBaseConnectionInformationFileNotFoundException | SQLException | DataBaseDriverMissingException | DataBaseInformationFileParsingException | DataBaseConnectionException ex) {
+
+                if (history != null) {
+                    request.getRequestDispatcher("/WEB-INF/history.jsp").forward(request, response);
+                }
+
+            } catch (DataBaseConnectionInformationFileNotFoundException | SQLException | DataBaseDriverMissingException | DataBaseInformationFileParsingException | DataBaseConnectionException ex) {
                 Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
                 request.setAttribute("error", ex);
                 request.getRequestDispatcher("/WEB-INF/error.jsp").forward(request, response);
-            } catch (Exception ex){
+            } catch (Exception ex) {
                 Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
                 request.setAttribute("error", new UnexpectedErrorException(ex));
                 request.getRequestDispatcher("/WEB-INF/error.jsp").forward(request, response);
             }
+        } else {
+            request.getRequestDispatcher("/WEB-INF/errorAuth.jsp").forward(request, response);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -34,7 +34,7 @@
         %>
         <table BORDER="1">
             <tr> 
-                <th>Utilisation CPU</th>
+                <th>CPU usage</th>
             </tr>
             <tr>
                 <th><%= cpuTotal %> %</th>
@@ -57,16 +57,16 @@
         <br>
         <table BORDER="1">
             <tr> 
-                <th>Information mémoire</th>
+                <th>Memory information</th>
             </tr>
             <tr>
-                <th>Totale : <%= totalMem%> Mo</th>
+                <th>Total : <%= totalMem%> Mo</th>
             </tr>
             <tr>
-                <th>Utilisée : <%= usedMem%> Mo</th>
+                <th>Used : <%= usedMem%> Mo</th>
             </tr>
             <tr>
-                <th>Libre : <%= freeMem%> Mo</th>
+                <th>Free : <%= freeMem%> Mo</th>
             </tr>
         </table>
         <%}%>
@@ -76,13 +76,13 @@
         <% if (processExist != null && processExist.toString().equals("true")) { %>
         <table BORDER="1" width="50%">
             <tr> 
-                <th colspan="4">Liste des processus</th>
+                <th colspan="4">Process list</th>
             </tr>
             <tr> 
                 <th>PID</th>
-                <th>Nom</th>
-                <th>Mémoire</th>
-                <th>Temps CPU</th>
+                <th>Name</th>
+                <th>Memory</th>
+                <th>CPU use</th>
             </tr>   
         <%! String pid;
             String name;

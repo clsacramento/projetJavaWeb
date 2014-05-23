@@ -81,4 +81,12 @@ public class ServerDAO {
         
         return null;
     }
+
+    public static void delHost(String id) throws SQLException, DataBaseConnectionInformationFileNotFoundException, DataBaseDriverMissingException, DataBaseInformationFileParsingException, DataBaseConnectionException {
+        
+        java.sql.PreparedStatement stmt = DataBaseConnection.getStatement("delete from server where id_server=?",Statement.RETURN_GENERATED_KEYS);
+        stmt.setInt(1,Integer.parseInt(id));
+        
+        stmt.executeUpdate();
+    }
 }
