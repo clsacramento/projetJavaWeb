@@ -32,6 +32,14 @@
         <servlet-name>AddUser</servlet-name>
         <servlet-class>controllers.AddUser</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Server</servlet-name>
+        <servlet-class>controllers.Server</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Servers</servlet-name>
+        <servlet-class>controllers.Servers</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Monitor</servlet-name>
         <url-pattern>/Monitor</url-pattern>
@@ -63,6 +71,14 @@
     <servlet-mapping>
         <servlet-name>AddUser</servlet-name>
         <url-pattern>/AddUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Server</servlet-name>
+        <url-pattern>/Server</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Servers</servlet-name>
+        <url-pattern>/Servers</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

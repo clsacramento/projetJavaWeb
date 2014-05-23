@@ -52,7 +52,7 @@
                         <td><%=server%></td>
                         <td><%=user%></td>
                         <td><%=type%></td>
-                        <td><a href="RequestDetailsController?id_request=<%=id%>">click</a></td>
+                        <td><a href="RequestDetailsController?id_request=<%=id%>">details</a></td>
                     </tr>
                 <%}%>
             </tbody>
